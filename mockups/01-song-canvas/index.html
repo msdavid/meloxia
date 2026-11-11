@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-look="graphite">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Synthia · Mockup 01 · Song canvas and section grid</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Interface mockup: everything is clickable and draggable, nothing makes sound. -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo" data-icon="wave"></span>
+        <b>Synthia</b>
+        <span class="song-title" contenteditable="true" spellcheck="false">Night Bus</span>
+      </div>
+
+      <div class="transport">
+        <button class="icon-btn" id="stop" title="Stop" data-icon="stop"></button>
+        <button class="play-btn" id="play" title="Play / stop (Space)" data-icon="play"></button>
+        <div class="readout" title="What Play will play, and where it is">
+          <span id="mode">Song</span>
+          <b id="pos">1.1</b>
+        </div>
+        <div class="field">
+          <label>BPM</label>
+          <button class="nudge" data-bpm="-1" data-icon="minus"></button>
+          <b id="bpm">118</b>
+          <button class="nudge" data-bpm="1" data-icon="plus"></button>
+        </div>
+        <div class="field">
+          <label>Key</label>
+          <b class="key">C minor</b>
+        </div>
+      </div>
+
+      <div class="right">
+        <span class="badge">Mockup 01 · no sound</span>
+        <div class="meter" title="Master level"><i></i><i></i></div>
+        <div class="looks" title="Visual direction">
+          <button data-look="graphite" title="Look A · Graphite"></button>
+          <button data-look="midnight" title="Look B · Midnight"></button>
+          <button data-look="paper" title="Look C · Paper"></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="stage">
+      <aside class="palette">
+        <h3>Build</h3>
+        <div class="tool" data-tool="section" title="Drag onto the canvas">
+          <span class="tool-ico" data-icon="section"></span>
+          <span><b>Section</b><small>A looping part of the song</small></span>
+        </div>
+
+        <h3>Ideas <em>not decided</em></h3>
+        <div class="tool idea" title="An idea, not built in this mockup">
+          <span class="tool-ico" data-icon="fork"></span>
+          <span><b>Fork</b><small>Pick one of two next sections</small></span>
+        </div>
+        <div class="tool idea" title="An idea, not built in this mockup">
+          <span class="tool-ico" data-icon="repeat"></span>
+          <span><b>Repeat</b><small>Loop a group of sections</small></span>
+        </div>
+        <div class="tool idea" title="An idea, not built in this mockup">
+          <span class="tool-ico" data-icon="note"></span>
+          <span><b>Note</b><small>A sticky note to yourself</small></span>
+        </div>
+
+        <p class="palette-foot">
+          Drag a Section onto the canvas. Drag from a section's right dot to connect it to the next one.
+          Double-click a section to open it.
+        </p>
+      </aside>
+
+      <div class="canvas" id="canvas">
+        <div class="world" id="world">
+          <svg id="edges"></svg>
+          <div id="nodes"></div>
+          <div class="node-tools" id="tools" hidden></div>
+        </div>
+        <div class="zoom">
+          <button data-zoom="out" title="Zoom out" data-icon="minus"></button>
+          <button data-zoom="reset" id="zoom-label" title="Reset zoom">100%</button>
+          <button data-zoom="in" title="Zoom in" data-icon="plus"></button>
+          <button data-zoom="fit" title="Fit the song in view" data-icon="fit"></button>
+        </div>
+        <div class="hints">
+          <span><kbd>Space</kbd> play song</span>
+          <span><kbd>Enter</kbd> open</span>
+          <span><kbd>Del</kbd> remove</span>
+          <span><kbd>Ctrl</kbd> + scroll to zoom</span>
+        </div>
+      </div>
+
+      <section class="editor" id="editor" hidden></section>
+    </div>
+
+    <div class="pop" id="pop" hidden></div>
+    <div class="toast" id="toast"></div>
+
+    <script src="state.js"></script>
+    <script src="canvas.js"></script>
+    <script src="editor.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

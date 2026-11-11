@@ -1,0 +1,231 @@
+/* Placeholder look for the sound-check bench; the real design comes with the workflow. */
+:root {
+  color-scheme: dark;
+  --bg: #15171c;
+  --panel: #1f232b;
+  --line: #333a47;
+  --text: #e6e8ec;
+  --dim: #8b93a3;
+  --accent: #f0a53a;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: grid;
+  gap: 16px;
+}
+
+main.gate {
+  min-height: 80vh;
+  place-content: center;
+  justify-items: center;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0.04em;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+}
+
+.tag {
+  color: var(--dim);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+button,
+select,
+input[type="number"],
+.pad-load {
+  font: inherit;
+  color: var(--text);
+  background: #2a303b;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1305;
+  font-weight: 600;
+}
+
+button:disabled {
+  color: var(--dim);
+  cursor: default;
+}
+
+input[type="number"] {
+  width: 64px;
+  cursor: text;
+}
+
+.meter {
+  margin-left: auto;
+  width: 180px;
+  height: 8px;
+  background: #0d0f12;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.meter-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #4ccf7a, var(--accent));
+}
+
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.transport label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.beats {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.beat {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0d0f12;
+  border: 1px solid var(--line);
+}
+
+.beat.on {
+  background: var(--accent);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px 20px;
+}
+
+.controls label {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px;
+  color: var(--dim);
+}
+
+.controls input[type="range"],
+.controls select {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.controls output {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.keys {
+  display: flex;
+  gap: 3px;
+  margin-top: 20px;
+  touch-action: none;
+  user-select: none;
+}
+
+.key {
+  flex: 1;
+  height: 96px;
+  padding: 0 0 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: #e6e8ec;
+  color: #333;
+  font-size: 11px;
+}
+
+.key.black {
+  height: 64px;
+  background: #0d0f12;
+  color: var(--dim);
+}
+
+.key.on {
+  background: var(--accent);
+  color: #1a1305;
+}
+
+.pads {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.pad {
+  display: grid;
+  gap: 6px;
+}
+
+.pad-hit {
+  height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pad-hit:not(:disabled):active {
+  background: var(--accent);
+  color: #1a1305;
+}
+
+.pad-load {
+  text-align: center;
+  color: var(--dim);
+  padding: 3px;
+}
+
+.hint {
+  margin: 12px 0 0;
+  color: var(--dim);
+}
+
+.error {
+  color: #ff7b72;
+}
