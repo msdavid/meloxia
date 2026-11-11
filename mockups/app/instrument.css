@@ -1,0 +1,102 @@
+/* Area B: the instrument panel, and instrument names as buttons in the row headers. */
+
+.row .rname {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  margin: -3px 0;
+  padding: 3px 6px;
+  border-radius: 6px;
+  text-align: left;
+  color: inherit;
+}
+
+.row .rname:hover {
+  background: var(--surface-2);
+}
+
+.side:has(.side-intro) {
+  grid-template-rows: auto auto auto 1fr;
+}
+
+.side-intro {
+  display: grid;
+  gap: 10px;
+  padding: 2px 16px 12px;
+}
+
+.inst-src {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--r);
+  background: var(--surface-2);
+}
+
+.inst-src b {
+  font-size: 13px;
+}
+
+.inst-src span {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.inst-src small {
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.inst-change {
+  width: 100%;
+}
+
+.side .ctl-head .own {
+  margin-left: 8px;
+}
+
+/* ---------- wave shape: four pictures ---------- */
+
+.waves {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.waves button {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px 4px 6px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  color: var(--dim);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.waves button:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.waves button.on {
+  border-color: var(--c);
+  background: color-mix(in oklab, var(--c) 14%, transparent);
+  color: var(--text);
+}
+
+.waves svg {
+  width: 46px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.waves button.on svg {
+  stroke: var(--c);
+}

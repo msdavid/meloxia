@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en" data-look="graphite">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Synthia</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="stage.css" />
+    <link rel="stylesheet" href="blocks.css" />
+    <link rel="stylesheet" href="editor.css" />
+    <link rel="stylesheet" href="notes.css" />
+    <link rel="stylesheet" href="fx.css" />
+    <link rel="stylesheet" href="rack.css" />
+    <link rel="stylesheet" href="tips.css" />
+    <link rel="stylesheet" href="drag.css" />
+    <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="library.css" />
+    <link rel="stylesheet" href="library.import.css" />
+    <link rel="stylesheet" href="midi.css" />
+    <link rel="stylesheet" href="system.css" />
+    <link rel="stylesheet" href="system.more.css" />
+    <link rel="stylesheet" href="flow.css" />
+    <link rel="stylesheet" href="flow.path.css" />
+    <link rel="stylesheet" href="stickies.css" />
+    <link rel="stylesheet" href="instrument.css" />
+    <link rel="stylesheet" href="record.css" />
+  </head>
+  <body>
+    <!-- Interface mockup: everything is clickable and draggable, nothing makes sound. -->
+    <header class="topbar">
+      <div class="brand">
+        <button class="icon-btn" id="menu-btn" data-icon="menu"></button>
+        <span class="logo" data-icon="wave"></span>
+        <b>Synthia</b>
+        <span class="song-title" contenteditable="true" spellcheck="false">Night Bus</span>
+      </div>
+
+      <div class="transport">
+        <button class="icon-btn" id="stop" data-icon="stop"></button>
+        <button class="play-btn" id="play" data-icon="play"></button>
+        <div class="readout">
+          <span id="mode">Song</span>
+          <b id="pos">1.1</b>
+        </div>
+        <div class="field">
+          <label><span class="lbl-txt">Speed</span><span class="lbl-ico" data-icon="tempo"></span></label>
+          <button class="nudge" data-bpm="-1" data-icon="minus"></button>
+          <b id="bpm">118</b><small class="unit">bpm</small>
+          <button class="nudge" data-bpm="1" data-icon="plus"></button>
+        </div>
+        <div class="field">
+          <label><span class="lbl-txt">Key</span><span class="lbl-ico" data-icon="clef"></span></label>
+          <b class="key">C minor</b>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="history">
+          <button class="icon-btn" id="undo" data-icon="undo" disabled></button>
+          <button class="icon-btn" id="redo" data-icon="redo" disabled></button>
+        </div>
+        <button class="top-btn" id="song-fx" data-panel="song"><span data-icon="knob"></span><span class="top-lbl">Song effects</span></button>
+        <div class="meter"><i></i><i></i></div>
+      </div>
+    </header>
+
+    <div class="stage">
+      <aside class="palette">
+        <h3>Build</h3>
+        <div class="tool" data-tool="section">
+          <span class="tool-ico" data-icon="section"></span>
+          <span><b>Section</b><small>A looping part of the song</small></span>
+        </div>
+
+        <div class="tool" data-tool="together">
+          <span class="tool-ico" data-icon="together"></span>
+          <span><b>Play together</b><small>Several sections at the same time</small></span>
+        </div>
+        <div class="tool" data-tool="note">
+          <span class="tool-ico" data-icon="note"></span>
+          <span><b>Note</b><small>A sticky note to yourself</small></span>
+        </div>
+
+        <h3>From plugins</h3>
+        <div class="tool plugin" data-tool="tempo">
+          <span class="tool-ico" data-icon="tempo"></span>
+          <span><b>Speed change</b><small>Speed tools · a new speed from here on</small></span>
+        </div>
+
+        <p class="palette-foot">
+          Drag a block onto the canvas, or onto a connection to slot it in. Drag from a block's right dot to connect it,
+          and right-click a connection to choose when the song takes it. Double-click a section to open it.
+        </p>
+      </aside>
+
+      <div class="canvas" id="canvas">
+        <div class="world" id="world">
+          <svg id="edges"></svg>
+          <div id="nodes"></div>
+          <div class="node-tools" id="tools" hidden></div>
+        </div>
+        <div class="corner">
+          <span class="badge">Mockup · no sound</span>
+          <div class="zoom">
+            <button data-zoom="out" data-icon="minus"></button>
+            <button data-zoom="reset" id="zoom-label">100%</button>
+            <button data-zoom="in" data-icon="plus"></button>
+            <button data-zoom="fit" data-icon="fit"></button>
+          </div>
+        </div>
+        <div class="hints">
+          <span><kbd>Space</kbd> play song</span>
+          <span><kbd>Enter</kbd> open</span>
+          <span><kbd>Del</kbd> remove</span>
+          <span><kbd>Ctrl</kbd> + scroll to zoom</span>
+        </div>
+      </div>
+
+      <section class="editor" id="editor" hidden></section>
+      <aside class="side" id="side" hidden></aside>
+    </div>
+
+    <div class="pop" id="pop" hidden></div>
+    <div class="insp" id="insp" hidden></div>
+    <div class="toast" id="toast"></div>
+
+    <script src="state.js"></script>
+    <script src="ui.js"></script>
+    <script src="popover.js"></script>
+    <script src="dialog.js"></script>
+    <script src="flow-logic.js"></script>
+    <script src="canvas.js"></script>
+    <script src="canvas.nodes.js"></script>
+    <script src="flow.js"></script>
+    <script src="flow.blocks.js"></script>
+    <script src="flow.path.js"></script>
+    <script src="flow.demo.js"></script>
+    <script src="stickies.js"></script>
+    <script src="stickies.places.js"></script>
+    <script src="stickies.arrow.js"></script>
+    <script src="editor.js"></script>
+    <script src="notes.js"></script>
+    <script src="drag.js"></script>
+    <script src="effects.js"></script>
+    <script src="side.js"></script>
+    <script src="panel.js"></script>
+    <script src="system.data.js"></script>
+    <script src="system.js"></script>
+    <script src="system.more.js"></script>
+    <script src="tips.js"></script>
+    <script src="library.data.js"></script>
+    <script src="library.js"></script>
+    <script src="library.import.js"></script>
+    <script src="midi.data.js"></script>
+    <script src="midi.js"></script>
+    <script src="history.js"></script>
+    <script src="instrument.js"></script>
+    <script src="record.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

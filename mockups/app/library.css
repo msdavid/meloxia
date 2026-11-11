@@ -1,0 +1,388 @@
+/* Library and Add instruments (area B). Colours come from the look variables only. */
+
+/* ---------- library layout ---------- */
+
+.lib-dialog .dialog-body {
+  padding: 0;
+  overflow: hidden;
+}
+
+.lib {
+  display: grid;
+  grid-template-columns: 180px 1fr 280px;
+  height: 100%;
+  min-height: 0;
+  border-top: 1px solid var(--line);
+}
+
+.lib-fams {
+  display: grid;
+  align-content: start;
+  gap: 1px;
+  padding: 10px 8px;
+  overflow: auto;
+  border-right: 1px solid var(--line);
+  background: var(--canvas);
+}
+
+.lib-fam {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--r);
+  color: var(--dim);
+  font-weight: 500;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+
+.lib-fam:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.lib-fam.on {
+  background: var(--surface-2);
+  color: var(--text);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.lib-fam.gap {
+  margin-top: 10px;
+}
+
+.lib-fam small {
+  color: var(--faint);
+  font-size: 11px;
+}
+
+.lib-main {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.lib-top {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 0;
+}
+
+.lib-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--canvas);
+  color: var(--dim);
+}
+
+.lib-search:focus-within {
+  border-color: var(--accent);
+}
+
+.lib-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+}
+
+.lib-title {
+  margin: 14px 16px 8px;
+  font-size: 13px;
+  color: var(--dim);
+  font-weight: 600;
+}
+
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  align-content: start;
+  gap: 10px;
+  padding: 0 16px 16px;
+  overflow: auto;
+}
+
+.lib-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 11.5px;
+}
+
+/* ---------- cards ---------- */
+
+.lib-card {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface-2);
+  cursor: default;
+  transition: border-color 0.12s, transform 0.12s;
+}
+
+.lib-card:hover {
+  border-color: var(--edge);
+}
+
+.lib-card.sel {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.lib-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.lib-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.lib-size,
+.lib-bank {
+  color: var(--faint);
+  font-size: 11.5px;
+}
+
+.lib-bank {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lib-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 18px;
+}
+
+.lib-badge {
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: var(--surface-3);
+  color: var(--dim);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.lib-badge.own {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  color: var(--text);
+}
+
+.lib-card footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.lib-preview {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  color: var(--dim);
+}
+
+.lib-preview:hover,
+.lib-preview.on {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.lib-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.lib-bars i {
+  width: 2px;
+  height: 3px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.lib-preview.on .lib-bars i {
+  background: var(--accent);
+  animation: lib-bar 0.6s ease-in-out infinite alternate;
+}
+
+.lib-bars i:nth-child(2) { height: 6px; }
+.lib-bars i:nth-child(3) { height: 9px; }
+.lib-bars i:nth-child(4) { height: 5px; }
+
+.lib-preview.on .lib-bars i:nth-child(2) { animation-delay: -0.15s; }
+.lib-preview.on .lib-bars i:nth-child(3) { animation-delay: -0.4s; }
+.lib-preview.on .lib-bars i:nth-child(4) { animation-delay: -0.25s; }
+.lib-preview.on .lib-bars i:nth-child(5) { animation-delay: -0.5s; }
+
+@keyframes lib-bar {
+  to {
+    height: 12px;
+  }
+}
+
+.lib-state {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.lib-here {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--dim);
+  font-size: 12px;
+}
+
+.lib-here svg.i {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+
+.lib-progress {
+  position: relative;
+  width: 140px;
+  height: 22px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--surface-3);
+  font-size: 11px;
+}
+
+.lib-progress i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: color-mix(in oklab, var(--accent) 45%, transparent);
+}
+
+.lib-progress.done i {
+  background: color-mix(in oklab, var(--accent) 70%, transparent);
+}
+
+.lib-progress span {
+  position: relative;
+  display: block;
+  line-height: 22px;
+  text-align: center;
+  color: var(--text);
+}
+
+.lib-empty {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 50px 20px;
+  color: var(--dim);
+  text-align: center;
+}
+
+.lib-empty b {
+  color: var(--text);
+}
+
+.lib-empty p {
+  max-width: 420px;
+  margin: 0 0 8px;
+}
+
+/* ---------- detail ---------- */
+
+.lib-detail {
+  padding: 16px;
+  overflow: auto;
+  border-left: 1px solid var(--line);
+  background: var(--canvas);
+  font-size: 12.5px;
+}
+
+.lib-detail h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.lib-note,
+.lib-hint {
+  margin: 0 0 12px;
+  color: var(--dim);
+}
+
+.lib-detail dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  margin: 0 0 12px;
+}
+
+.lib-detail dt {
+  color: var(--faint);
+}
+
+.lib-detail dd {
+  margin: 0;
+}
+
+.lib-credit {
+  font-style: italic;
+}
+
+.lib-facts {
+  margin: 0 0 12px;
+  padding-left: 18px;
+  color: var(--dim);
+}
+
+.lib-facts li + li {
+  margin-top: 4px;
+}
+
+.lib-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ---------- shared controls inside these dialogs ---------- */
+
+/* The base segmented control uses the number font; here it carries words. */
+:is(.lib-dialog, .imp-dialog, .midi-dialog) .seg {
+  display: inline-flex;
+}
+
+:is(.lib-dialog, .imp-dialog, .midi-dialog) .seg button {
+  font: 600 12px var(--font);
+}

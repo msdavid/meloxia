@@ -1,0 +1,230 @@
+/* The stage: the Build palette and the song canvas. */
+
+/* ---------- stage: palette and canvas ---------- */
+
+.stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 208px 1fr;
+  min-height: 0;
+}
+
+.palette,
+.canvas {
+  transition:
+    opacity 0.2s,
+    filter 0.2s;
+}
+
+.stage.editing .palette,
+.stage.editing .canvas {
+  opacity: 0.4;
+  filter: blur(3px) saturate(0.6);
+  pointer-events: none;
+}
+
+.palette {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 12px;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  z-index: 2;
+}
+
+.palette h3 {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 4px 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.palette h3:not(:first-child) {
+  margin-top: 16px;
+}
+
+.palette h3 em {
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--faint);
+}
+
+.tool {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  cursor: grab;
+  transition:
+    border-color 0.12s,
+    transform 0.12s;
+}
+
+.tool:not(.idea):hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.tool b {
+  display: block;
+  font-size: 12.5px;
+}
+
+.tool small {
+  display: block;
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.tool-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: calc(var(--r) - 1px);
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+
+.tool.idea {
+  border-style: dashed;
+  background: none;
+  opacity: 0.6;
+  cursor: default;
+}
+
+.tool.idea .tool-ico {
+  background: var(--surface-2);
+  color: var(--dim);
+}
+
+.palette-foot {
+  margin: auto 4px 0;
+  color: var(--faint);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.ghost {
+  position: fixed;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 224px;
+  height: 140px;
+  border-radius: var(--r-lg);
+  border: 1.5px dashed var(--faint);
+  background: color-mix(in oklab, var(--surface) 70%, transparent);
+  color: var(--dim);
+  font-weight: 600;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  pointer-events: none;
+}
+
+.ghost.ok {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.canvas {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--canvas);
+  background-image: radial-gradient(var(--dot) 1.3px, transparent 1.3px);
+  cursor: grab;
+}
+
+.canvas.panning {
+  cursor: grabbing;
+}
+
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+/* connections */
+
+#edges {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.edge path {
+  fill: none;
+}
+
+.edge .hit {
+  stroke: transparent;
+  stroke-width: 18;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.edge .line {
+  stroke: var(--edge);
+  stroke-width: 2;
+}
+
+.edge .arrow {
+  fill: var(--edge);
+}
+
+.edge:hover .line {
+  stroke: var(--dim);
+}
+
+.edge:hover .arrow {
+  fill: var(--dim);
+}
+
+.edge.sel .line,
+.edge.live .line {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.edge.sel .arrow,
+.edge.live .arrow {
+  fill: var(--accent);
+}
+
+.edge.live .line {
+  stroke-dasharray: 7 6;
+  animation: flow 0.45s linear infinite;
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -13;
+  }
+}
+
+.edge-temp {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+}

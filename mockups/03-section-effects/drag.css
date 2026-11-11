@@ -1,0 +1,49 @@
+/* Mockup 03: moving notes, and the selection. */
+
+.cell.on .note {
+  cursor: grab;
+}
+
+body.note-drag,
+body.note-drag * {
+  cursor: grabbing !important;
+}
+
+body.note-drag.copying,
+body.note-drag.copying * {
+  cursor: copy !important;
+}
+
+body.note-drag.denied,
+body.note-drag.denied * {
+  cursor: not-allowed !important;
+}
+
+/* the faint ghost left at the origin */
+.note.ghost {
+  opacity: 0.3;
+}
+
+.note.picked {
+  z-index: 3;
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
+}
+
+/* where the note will land */
+.drop-mark {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 1.5px;
+  z-index: 5;
+  border-radius: var(--r-cell);
+  border: 2px solid var(--text);
+  background: color-mix(in oklab, var(--text) 14%, transparent);
+  pointer-events: none;
+}
+
+.lane .drop-mark {
+  top: 0;
+  bottom: 0;
+}

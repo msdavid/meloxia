@@ -1,0 +1,494 @@
+/* The section editor: header, instrument rows and the step grid. */
+
+/* ---------- section editor ---------- */
+
+.editor {
+  --c: hsl(var(--h) var(--is) var(--il));
+  position: absolute;
+  inset: 14px;
+  z-index: 10;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  border-radius: calc(var(--r-lg) + 2px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 90px rgb(0 0 0 / 0.5);
+  opacity: 0;
+  transform: scale(0.86);
+  transition:
+    transform 0.2s cubic-bezier(0.2, 0.85, 0.25, 1),
+    opacity 0.18s;
+}
+
+[data-look="paper"] .editor {
+  box-shadow: 0 24px 70px rgb(70 55 30 / 0.22);
+}
+
+.editor.open {
+  opacity: 1;
+  transform: none;
+}
+
+/* while it fades out, clicks go straight through to the canvas */
+.editor:not(.open) {
+  pointer-events: none;
+}
+
+.editor[hidden] {
+  display: none;
+}
+
+.ed-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--c) 9%, var(--surface)), var(--surface));
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 9px 5px 4px;
+  border-radius: var(--r);
+  color: var(--dim);
+  font-weight: 500;
+}
+
+.crumb:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.sep {
+  color: var(--faint);
+  font-style: normal;
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--c);
+  box-shadow: 0 0 12px hsl(var(--h) 90% 60% / var(--glow-a));
+}
+
+.ed-name {
+  min-width: 40px;
+  margin-left: -4px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 650;
+  cursor: text;
+  user-select: text;
+}
+
+.ed-name:hover,
+.ed-name:focus {
+  background: var(--surface-2);
+}
+
+.loop-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  margin-left: 10px;
+  padding: 0 16px 0 12px;
+  border-radius: 99px;
+  background: var(--c);
+  color: var(--on-ink);
+  font-weight: 650;
+}
+
+.loop-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* the grid */
+
+.grid-scroll {
+  position: relative;
+  overflow: auto;
+  padding-bottom: 24px;
+}
+
+.grid {
+  position: relative;
+  width: max-content;
+  min-width: 100%;
+  padding-right: 24px;
+}
+
+.ruler,
+.row,
+.lane,
+.add-row {
+  display: flex;
+}
+
+.cells {
+  display: flex;
+}
+
+.rh {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  width: var(--hw);
+  padding: 0 12px 0 16px;
+  background: var(--surface);
+}
+
+.ruler {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  height: 32px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 6px;
+}
+
+.ruler .cells {
+  background: var(--surface);
+}
+
+.cell,
+.tick {
+  position: relative;
+  flex: none;
+  width: var(--cw);
+}
+
+.beat {
+  margin-left: 6px;
+}
+
+.bar {
+  margin-left: 14px;
+}
+
+.tick span {
+  position: absolute;
+  left: 3px;
+  bottom: 7px;
+  color: var(--faint);
+  font: 500 10px var(--mono);
+  white-space: nowrap;
+}
+
+.tick span.b1 {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  bottom: 6px;
+}
+
+.row,
+.lanes {
+  --c: hsl(var(--h) var(--is) var(--il));
+}
+
+.row {
+  height: 44px;
+}
+
+.row:hover .rh {
+  background: color-mix(in oklab, var(--c) 6%, var(--surface));
+}
+
+.row.dim .cells,
+.row.dim .glyph,
+.row.dim .rname {
+  opacity: 0.35;
+}
+
+.cell {
+  cursor: pointer;
+}
+
+.cell::before {
+  content: "";
+  position: absolute;
+  inset: 5px 1.5px;
+  border-radius: var(--r-cell);
+  background: var(--cell);
+  transition: background 0.08s;
+}
+
+.cell.alt::before {
+  background: var(--cell-alt);
+}
+
+.cell:hover::before {
+  background: color-mix(in oklab, var(--c) 38%, var(--cell));
+}
+
+/* row headers */
+
+.led {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--surface-3);
+}
+
+.led.hit {
+  animation: led 0.2s ease-out;
+}
+
+@keyframes led {
+  0% {
+    background: var(--c);
+    box-shadow: 0 0 10px var(--c);
+  }
+}
+
+.glyph {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: calc(var(--r) - 1px);
+  background: color-mix(in oklab, var(--c) 17%, transparent);
+  color: var(--c);
+}
+
+.rname {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rname small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--dim);
+  font-size: 10.5px;
+  font-weight: 400;
+}
+
+.mini {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: var(--faint);
+  font: 600 10px var(--mono);
+}
+
+.mini svg.i {
+  width: 13px;
+  height: 13px;
+  transition: transform 0.15s;
+}
+
+.mini:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+.mini.m.on {
+  background: #e5484d;
+  color: #fff;
+}
+
+.mini.s.on {
+  background: #f5c33b;
+  color: #1f1400;
+}
+
+.mini.chev {
+  color: var(--dim);
+}
+
+.mini.chev.on {
+  background: color-mix(in oklab, var(--c) 20%, transparent);
+  color: var(--c);
+}
+
+.mini.chev.on svg.i {
+  transform: rotate(180deg);
+}
+
+.mini.x {
+  opacity: 0;
+}
+
+.row:hover .mini.x {
+  opacity: 1;
+}
+
+/* the note grid a synth row unfolds into */
+
+.lanes {
+  margin: 2px 0 10px;
+  padding: 6px 0;
+  background: color-mix(in oklab, var(--c) 5%, transparent);
+  border-block: 1px solid var(--line-soft);
+}
+
+.lane {
+  height: 20px;
+}
+
+.lane .rh {
+  justify-content: flex-end;
+  background: color-mix(in oklab, var(--c) 5%, var(--surface));
+  color: var(--faint);
+  font: 500 10px var(--mono);
+}
+
+.lane.root .rh {
+  color: var(--c);
+  font-weight: 700;
+}
+
+.lane .cell::before {
+  inset: 1.5px;
+  border-radius: 3px;
+}
+
+.lane.root .cell:not(.on)::before {
+  background: color-mix(in oklab, var(--c) 12%, var(--cell-alt));
+}
+
+.lane:hover .rh {
+  color: var(--text);
+}
+
+.add-row {
+  height: 52px;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px 0 8px;
+  border-radius: var(--r);
+  border: 1px dashed var(--line);
+  color: var(--dim);
+  font-weight: 500;
+}
+
+.add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 52px; /* stops at the last instrument, above the Add instrument row */
+  left: var(--hw);
+  z-index: 2;
+  width: 2px;
+  background: var(--playhead);
+  box-shadow: 0 0 14px var(--playhead);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.playhead::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 2px;
+  width: 64px;
+  background: linear-gradient(to left, color-mix(in oklab, var(--playhead) 20%, transparent), transparent);
+}
+
+body.playing .playhead {
+  opacity: 1;
+}
+
+.ed-foot {
+  display: flex;
+  gap: 20px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--dim);
+  font-size: 11.5px;
+}
+
+/* empty section */
+
+.editor .empty {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  height: 100%;
+  min-height: 320px;
+  text-align: center;
+}
+
+.empty-art {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--c) 16%, transparent);
+  color: var(--c);
+}
+
+.empty-art svg.i {
+  width: 26px;
+  height: 26px;
+}
+
+.empty h2 {
+  margin: 6px 0 0;
+  font-size: 17px;
+}
+
+.empty p {
+  margin: 0 0 8px;
+  color: var(--dim);
+}
+
+.quick-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.quick {
+  --c: hsl(var(--h) var(--is) var(--il));
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 14px 0 9px;
+  border-radius: 99px;
+  background: color-mix(in oklab, var(--c) 16%, transparent);
+  color: var(--c);
+  font-weight: 600;
+}
+
+.quick:hover {
+  background: color-mix(in oklab, var(--c) 28%, transparent);
+}

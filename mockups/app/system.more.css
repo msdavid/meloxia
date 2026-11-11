@@ -1,0 +1,199 @@
+/* System screens, part 2: plugin cards and declarations (also used by the consent screen), credits, storage. */
+
+.plug-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plug-card {
+  padding: 12px 14px;
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  transition: opacity 0.15s;
+}
+
+.plug-card.off {
+  opacity: 0.55;
+}
+
+.plug-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.plug-meta,
+.plug-uses {
+  margin: 6px 0 0 46px;
+  color: var(--faint);
+  font: 11.5px var(--mono);
+}
+
+.plug-uses {
+  font-family: var(--font);
+  color: var(--dim);
+}
+
+.plug-actions {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 0 46px;
+}
+
+/* what the author says: deliberately framed as a claim, never as a guarantee */
+.decl {
+  margin: 10px 0 0 46px;
+  padding: 10px 12px;
+  border-radius: var(--r);
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+}
+
+.decl h5 {
+  margin: 0 0 6px;
+  font-size: 12px;
+}
+
+.decl ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.decl code {
+  font: 11.5px var(--mono);
+}
+
+.decl-none {
+  margin: 0;
+  color: var(--dim);
+  font-style: italic;
+  font-size: 12.5px;
+}
+
+.decl-fixed {
+  margin: 8px 0 0;
+  padding-top: 7px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--dim);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.sys-callout {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--r-lg);
+  background: color-mix(in oklab, var(--accent) 8%, var(--surface-2));
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.sys-callout span {
+  color: var(--dim);
+}
+
+.sys-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 6px 1px 2px;
+  border-radius: 50%;
+  background: #3fb950;
+  box-shadow: 0 0 0 3px color-mix(in oklab, #3fb950 25%, transparent);
+}
+
+/* credits */
+.credits {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credits li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line-soft);
+  font-size: 13px;
+}
+
+.credits small {
+  grid-column: 1 / -1;
+  color: var(--dim);
+  font-size: 11.5px;
+}
+
+.lic {
+  color: var(--faint);
+  font: 11.5px var(--mono);
+}
+
+.lic-legend li {
+  grid-template-columns: 130px 1fr;
+  align-items: baseline;
+}
+
+.lic-legend small {
+  grid-column: auto;
+}
+
+/* storage */
+.store-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.store ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+}
+
+.store li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.store li span {
+  color: var(--dim);
+  font: 11.5px var(--mono);
+}
+
+.store li i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.p0 {
+  background: var(--accent);
+}
+
+.p1 {
+  background: color-mix(in oklab, var(--accent) 55%, var(--surface-3));
+}
+
+.p2 {
+  background: var(--edge);
+}

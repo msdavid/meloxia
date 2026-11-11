@@ -1,0 +1,560 @@
+/* Shared components: buttons, menu, dialog, chips, toast action, undo and redo. */
+
+/* ---------- instrument picker and toast ---------- */
+
+.pop {
+  position: fixed;
+  z-index: 40;
+  width: 340px;
+  padding: 8px 10px 10px;
+  border-radius: var(--r-lg);
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+}
+
+.pop[hidden] {
+  display: none;
+}
+
+/* menus and popovers opened inside a dialog show above it */
+body:has(> .dialog-back:not([hidden])) .pop {
+  z-index: 65;
+}
+
+.pop h4 {
+  margin: 8px 6px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.pick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.pick {
+  --c: hsl(var(--h) var(--is) var(--il));
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 8px 5px 6px;
+  border-radius: var(--r);
+  text-align: left;
+  font-weight: 500;
+}
+
+.pick.wide {
+  width: 100%;
+  --c: var(--dim);
+}
+
+.pick small {
+  display: block;
+  color: var(--dim);
+  font-size: 10.5px;
+  font-weight: 400;
+}
+
+.pick:not(:disabled):hover {
+  background: var(--surface);
+}
+
+.pick:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pick .chip {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: color-mix(in oklab, var(--c) 18%, transparent);
+  color: var(--c);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 70;
+  padding: 9px 16px;
+  border-radius: 99px;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 600;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: var(--surface-2);
+}
+
+.btn.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn.primary:hover {
+  background: color-mix(in oklab, var(--accent) 86%, var(--text));
+}
+
+.btn.danger {
+  border-color: color-mix(in oklab, #e5484d 60%, var(--line));
+  color: color-mix(in oklab, #e5484d 75%, var(--text));
+}
+
+.btn:disabled,
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  background: none;
+}
+
+.icon-btn:disabled:hover {
+  color: var(--dim);
+}
+
+.icon-btn.on {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+/* ---------- top bar: menu, undo and redo ---------- */
+
+#menu-btn {
+  margin-right: -2px;
+}
+
+.history {
+  display: flex;
+  gap: 2px;
+}
+
+/* ---------- menu (inside the popover) ---------- */
+
+.pop.menu-pop {
+  width: auto;
+  min-width: 220px;
+  padding: 6px;
+}
+
+.menu {
+  display: grid;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 10px 0 8px;
+  border-radius: var(--r);
+  text-align: left;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.menu-item:not(:disabled):hover {
+  background: var(--surface);
+}
+
+.menu-item:disabled {
+  color: var(--dim);
+  cursor: default;
+}
+
+.menu-item svg.i,
+.menu-gap {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--dim);
+}
+
+.menu-item span {
+  flex: 1;
+}
+
+.menu-item.on::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.menu-item kbd {
+  margin-left: 12px;
+}
+
+.menu hr {
+  margin: 5px 4px;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- modal dialog ---------- */
+
+.dialog-back {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(0 0 0 / 0.45);
+  animation: fade-in 0.15s ease-out;
+}
+
+.dialog-back[hidden] {
+  display: none;
+}
+
+.dialog {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  max-height: calc(100dvh - 48px); /* the backdrop's 24px padding, twice */
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+  animation: dialog-in 0.2s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.dialog.small {
+  width: min(440px, 100%);
+}
+
+.dialog.large {
+  width: min(1100px, 100%);
+  height: min(760px, 100%);
+}
+
+.dialog > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 10px 10px 18px;
+  font-size: 15px;
+}
+
+.dialog-body {
+  min-height: 0;
+  overflow: auto;
+  padding: 4px 18px 16px;
+  line-height: 1.5;
+}
+
+.dialog > footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+}
+
+/* ---------- chips ---------- */
+
+.chip-warn,
+.chip-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.chip-warn {
+  background: color-mix(in oklab, #e5a000 22%, transparent);
+  color: var(--text);
+}
+
+.chip-tag {
+  background: var(--surface-2);
+  color: var(--dim);
+}
+
+/* ---------- toast with an action ---------- */
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toast.has-act {
+  padding-right: 6px;
+}
+
+.toast.show.has-act {
+  pointer-events: auto;
+}
+
+.toast-act {
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: color-mix(in oklab, var(--bg) 14%, transparent);
+  color: inherit;
+  font-weight: 700;
+}
+
+.toast-act:hover {
+  background: color-mix(in oklab, var(--bg) 26%, transparent);
+}
+
+.toast.top {
+  top: 18px;
+  bottom: auto;
+  transform: translate(-50%, -12px);
+}
+
+.toast.top.show {
+  transform: translate(-50%, 0);
+}
+
+.dialog:focus {
+  outline: none;
+}
+
+/* ---------- top bar: one line down to 1000px ---------- */
+
+.topbar {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 12px;
+}
+
+.brand {
+  min-width: 0;
+}
+
+.brand > * {
+  flex: none;
+}
+
+.brand .song-title {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 260px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.topbar .right {
+  gap: 8px;
+}
+
+.lbl-ico {
+  display: none;
+}
+
+@media (max-width: 1199px) {
+  .field .lbl-txt {
+    display: none;
+  }
+
+  .field .lbl-ico {
+    display: grid;
+    color: var(--dim);
+  }
+
+  .field label {
+    margin-right: 0;
+  }
+
+  .readout {
+    width: 150px;
+  }
+}
+
+/* below 1120px the Key field folds to its icon, so the song title keeps its room */
+@media (max-width: 1119px) {
+  .field b.key {
+    display: none;
+  }
+}
+
+/* ---------- the mockup tag, beside the zoom buttons ---------- */
+
+.corner .badge {
+  background: var(--surface);
+}
+
+.hints {
+  flex-wrap: wrap;
+  row-gap: 4px;
+  width: max-content;
+  max-width: calc(100% - 330px);
+}
+
+/* ---------- shared fixes: switches and segments anywhere, small and quiet buttons ---------- */
+
+.switch {
+  background: var(--surface-2); /* visible on a dialog too */
+}
+
+.switch.on {
+  background: var(--c, var(--accent)); /* the instrument's colour inside its row, panel or inspector */
+}
+
+/* ---------- segmented control (segHtml): the whole base; panels and dialogs adjust size and font locally ---------- */
+
+.seg {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r);
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+.seg button {
+  min-width: 28px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: calc(var(--r) - 3px);
+  color: var(--dim);
+  font: 600 12px var(--mono);
+}
+
+.seg button:hover {
+  color: var(--text);
+}
+
+.seg button.on {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+.seg button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* The selected segment's fill reaches 3:1 against the unselected ones in every look, label 4.5:1 or better.
+   Dark looks: surface-3 mixed halfway to dim (not the accent, which belongs to Play and Record). */
+[data-look="graphite"] .seg button.on {
+  background: #60646e; /* 3.24:1, label 5.06:1 */
+}
+
+[data-look="midnight"] .seg button.on {
+  background: #585e87; /* 3.22:1, label 5.51:1 */
+}
+
+[data-look="paper"] .seg button.on {
+  background: var(--text); /* ink: 12.78:1, label 15.81:1 */
+  color: var(--surface);
+}
+
+.btn.small {
+  height: 26px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.btn.subtle {
+  border-color: transparent;
+  color: var(--dim);
+}
+
+.btn.subtle:hover {
+  color: var(--text);
+}
+
+.btn svg.i {
+  width: 14px;
+  height: 14px;
+  margin: -2px 6px 0 -2px;
+  vertical-align: middle;
+}
+
+/* On the canvas, the toast sits above the song path strip (worker3's, 14–58px from the bottom). */
+body:has(.stage:not(.editing)) .toast:not(.top) {
+  bottom: 76px;
+}
+
+/* ---------- a narrow editor (a side panel open on a small window): button labels fold to icons ---------- */
+
+.editor {
+  container-type: inline-size;
+}
+
+@container (max-width: 860px) {
+  .ed-head .lbl,
+  .ed-head .ed-btn span,
+  .ed-head .loop-btn span,
+  .ed-head .rec-btn span {
+    display: none;
+  }
+
+  .ed-head .ed-btn,
+  .ed-head .loop-btn,
+  .ed-head .rec-btn {
+    padding: 0 9px;
+  }
+
+  .ed-head .ed-name {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Side panel tabs stay on one line ("Effects 1", "Transitions"). */
+.side-tabs button {
+  white-space: nowrap;
+}
+
+.field .unit {
+  margin: 1px 2px 0 -2px;
+  color: var(--dim);
+  font-size: 10px;
+}

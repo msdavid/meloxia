@@ -1,0 +1,496 @@
+/* Mockup 02: per-note settings drawn in the grid, the note inspector and the row strip. */
+
+/* ---------- a note in the grid ---------- */
+
+/* A bar over the note's steps; its faint tint shows the note's full extent above a quiet fill. */
+.note {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  z-index: 1;
+  border-radius: var(--r-cell);
+  background: color-mix(in oklab, var(--c) 24%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--c) 50%, transparent);
+}
+
+/* timing: a shifted note is one clean bar drawn above the neighbour it overlaps */
+.note.nudged {
+  z-index: 2;
+  background: color-mix(in oklab, var(--c) 24%, var(--surface));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--c) 50%, transparent),
+    0 0 0 1.5px var(--surface);
+}
+
+.lane .note {
+  top: 1.5px;
+  bottom: 1.5px;
+  border-radius: 3px;
+}
+
+/* loudness: the fill's height (set inline), or its opacity in the pitch lanes */
+.fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.lane .fill {
+  top: 0;
+}
+
+/* repeat: one sliver per hit, inside the note's first step */
+.fill .first {
+  display: flex;
+  flex: none;
+  gap: 2px;
+}
+
+.fill b {
+  flex: 1;
+  background: var(--c);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.3),
+    0 0 12px hsl(var(--h) 95% 62% / var(--glow-a));
+}
+
+/* louder than the default: full height plus a bright cap line */
+.note.hot .fill b {
+  box-shadow:
+    inset 0 2px 0 color-mix(in oklab, var(--c) 35%, white),
+    0 0 12px hsl(var(--h) 95% 62% / var(--glow-a));
+}
+
+/* chance below 100: hatching */
+.note.maybe .fill b {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--surface) 62%, transparent) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+/* the note name of a synth row, legible over the fill or the empty part */
+.tag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--c);
+  color: var(--on-ink);
+  font: 700 9.5px var(--mono);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.tag sup {
+  margin-left: 1px;
+  font-size: 7.5px;
+  opacity: 0.8;
+}
+
+.editor.tight .tag {
+  display: none;
+}
+
+/* glide: a mark at the note's end, leaning towards the next note's pitch */
+.glide {
+  position: absolute;
+  top: 50%;
+  right: -7px;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  border-left: 7px solid var(--text);
+  border-block: 4px solid transparent;
+  transform: translateY(-50%) rotate(var(--rot));
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+/* length: a handle on the right edge, shown on hover */
+.grip {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  bottom: 0;
+  z-index: 3;
+  width: 10px;
+  cursor: ew-resize;
+}
+
+.grip::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  bottom: 18%;
+  left: 3.5px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--text);
+  box-shadow: 0 0 0 1px var(--surface);
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.note:hover .grip::after,
+body.sizing .grip::after {
+  opacity: 1;
+}
+
+body.sizing,
+body.sizing * {
+  cursor: ew-resize !important;
+}
+
+/* playback: a flash per repeat, then lit while the playhead is inside the note */
+.note.live {
+  box-shadow:
+    inset 0 0 0 1.5px var(--playhead),
+    0 0 14px color-mix(in oklab, var(--c) 70%, transparent);
+}
+
+.note.hit .fill b {
+  animation: note-hit var(--hit-d, 0.2s) ease-out var(--hit-n, 1);
+}
+
+@keyframes note-hit {
+  0% {
+    filter: brightness(1.8);
+  }
+}
+
+/* ---------- the row strip ---------- */
+
+.strip {
+  --c: hsl(var(--h) var(--is) var(--il));
+  display: flex;
+  height: 60px;
+  margin: 2px 0 8px;
+  background: color-mix(in oklab, var(--c) 5%, transparent);
+  border-block: 1px solid var(--line-soft);
+}
+
+.strip .rh {
+  justify-content: flex-end;
+  background: color-mix(in oklab, var(--c) 5%, var(--surface));
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: var(--r);
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+
+.tabs button {
+  padding: 3px 7px;
+  border-radius: calc(var(--r) - 3px);
+  color: var(--dim);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tabs button:hover {
+  color: var(--text);
+}
+
+.tabs button.on {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+.strip .cells {
+  cursor: ns-resize;
+}
+
+.strip[data-tab="nudge"] .cells {
+  background: linear-gradient(transparent calc(50% - 0.5px), var(--line) calc(50% - 0.5px) calc(50% + 0.5px), transparent 0);
+}
+
+.scell {
+  position: relative;
+  flex: none;
+  width: var(--cw);
+}
+
+.scell i {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  min-height: 2px;
+  border-radius: 2px;
+  background: var(--c);
+}
+
+/* ---------- the note inspector ---------- */
+
+.insp {
+  --c: hsl(var(--h) var(--is) var(--il));
+  position: fixed;
+  z-index: 45;
+  width: 360px;
+  border-radius: var(--r-lg);
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+}
+
+[data-look="paper"] .insp {
+  box-shadow: 0 18px 50px rgb(70 55 30 / 0.25);
+}
+
+.insp[hidden] {
+  display: none;
+}
+
+.insp-body {
+  max-height: 398px; /* 400 with the border */
+  overflow: auto;
+  padding: 7px 14px 8px;
+}
+
+/* the arrow is a turned square showing the two edges that face the note */
+.insp-arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  transform: rotate(45deg);
+}
+
+[data-side="right"] .insp-arrow {
+  left: -7px;
+  top: calc(var(--ay) - 6px);
+  border-top-color: transparent;
+  border-right-color: transparent;
+}
+
+[data-side="left"] .insp-arrow {
+  right: -7px;
+  top: calc(var(--ay) - 6px);
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+[data-side="below"] .insp-arrow {
+  top: -7px;
+  left: calc(var(--ax) - 6px);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+[data-side="above"] .insp-arrow {
+  bottom: -7px;
+  left: calc(var(--ax) - 6px);
+  border-top-color: transparent;
+  border-left-color: transparent;
+}
+
+.insp header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+.insp header b {
+  flex: 1;
+  font-size: 13px;
+}
+
+.insp .chip {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--c);
+}
+
+.ctl {
+  padding: 3px 0 5px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* two small controls side by side */
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 18px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.pair .ctl {
+  border-top: 0;
+}
+
+.ctl-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 17px;
+}
+
+.ctl-head b {
+  font-size: 12.5px;
+}
+
+.ctl output {
+  font: 600 11.5px var(--mono);
+}
+
+.ctl small {
+  display: block;
+  margin: 0 0 4px;
+  color: var(--dim);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.ctl input[type="range"] {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--c);
+}
+
+.ends {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--faint);
+  font-size: 10.5px;
+}
+
+/* equal widths keep the slider centred, under the centre mark */
+.ends span {
+  flex: none;
+  width: 30px;
+}
+
+.ends input[type="range"] {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.ends span:last-child {
+  text-align: right;
+}
+
+/* the centre detent of the timing slider */
+.ends::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 1px;
+  height: 4px;
+  background: var(--faint);
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepper button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 24px;
+  border-radius: var(--r);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.stepper output {
+  min-width: 72px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.switch {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: 99px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.switch i {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--dim);
+  transition: transform 0.15s;
+}
+
+.switch.on {
+  background: var(--c);
+  border-color: transparent;
+}
+
+.switch.on i {
+  background: #fff;
+  transform: translateX(14px);
+}
+
+.insp footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 4px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.insp .seg button {
+  height: 22px;
+}
+
+.insp footer button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--r);
+  color: var(--dim);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.insp footer button:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.insp footer .danger:hover {
+  color: #e5484d;
+}
+
+.mini.bars.on {
+  background: color-mix(in oklab, var(--c) 20%, transparent);
+  color: var(--c);
+}

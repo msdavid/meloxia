@@ -1,0 +1,367 @@
+/* Section blocks on the canvas, and the canvas's own buttons. */
+
+/* blocks */
+
+.start,
+.node {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  cursor: grab;
+}
+
+.start {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 84px;
+  height: 36px;
+  padding-right: 6px;
+  border-radius: 99px;
+  color: var(--dim);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.node {
+  --c: hsl(var(--h) var(--is) var(--il));
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 8px;
+  width: 224px;
+  height: 140px;
+  padding: 10px 12px 9px;
+  border-radius: var(--r-lg);
+  transition:
+    border-color 0.12s,
+    box-shadow 0.12s;
+}
+
+.node:hover {
+  border-color: var(--faint);
+}
+
+.node.sel,
+.start.sel {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 1px var(--accent),
+    var(--shadow);
+}
+
+.node.drop {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 3px color-mix(in oklab, var(--accent) 35%, transparent),
+    var(--shadow);
+}
+
+.node.dragging,
+.start.dragging {
+  cursor: grabbing;
+  z-index: 3;
+}
+
+.node.playing {
+  border-color: var(--c);
+  box-shadow:
+    0 0 0 1px var(--c),
+    0 0 28px hsl(var(--h) 90% 60% / 0.28),
+    var(--shadow);
+}
+
+.node.pop-in {
+  animation: pop-in 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+}
+
+.node-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--c);
+  box-shadow: 0 0 10px hsl(var(--h) 90% 60% / var(--glow-a));
+}
+
+.node-name {
+  overflow: hidden;
+  font-size: 13.5px;
+  font-weight: 650;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.node-len {
+  margin-left: auto;
+  flex: none;
+  color: var(--dim);
+  font: 500 11px var(--mono);
+}
+
+.thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--r) - 2px);
+  background: color-mix(in oklab, var(--c) 7%, var(--bg));
+  border: 1px solid var(--line-soft);
+}
+
+.thumb svg {
+  position: absolute;
+  inset: 4px 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 8px);
+}
+
+.thumb .bar-line {
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.thumb.empty {
+  display: grid;
+  place-items: center;
+  border-style: dashed;
+  border-color: var(--line);
+  background: none;
+  color: var(--faint);
+  font-size: 11.5px;
+}
+
+.thumb-head {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  margin-left: 5px;
+  background: var(--text);
+  opacity: 0;
+}
+
+.node.playing .thumb-head {
+  opacity: 0.9;
+}
+
+.node-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--dim);
+  font-size: 11.5px;
+}
+
+.node.playing .node-meta {
+  color: var(--c);
+  font-weight: 600;
+}
+
+.rep {
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+
+.rep b {
+  min-width: 26px;
+  text-align: center;
+  color: var(--text);
+  font: 600 11.5px var(--mono);
+}
+
+.rep button {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  color: var(--dim);
+}
+
+.rep button svg.i {
+  width: 12px;
+  height: 12px;
+}
+
+.rep button:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+.port {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--edge);
+  transition:
+    transform 0.12s,
+    border-color 0.12s,
+    background 0.12s;
+}
+
+.port.in {
+  left: -8px;
+}
+
+.port.out {
+  right: -8px;
+  cursor: crosshair;
+}
+
+.port.out:hover,
+.canvas.connecting .node:not(.sel) .port.in {
+  border-color: var(--accent);
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+.port.out::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+}
+
+.node-progress {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 3px;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.node-progress i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--c);
+}
+
+.node-tools {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--r);
+  background: var(--surface-3);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.node-tools[hidden] {
+  display: none;
+}
+
+.node-tools button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: calc(var(--r) - 3px);
+  color: var(--dim);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.node-tools button:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* a selected connection: one round button centred on its midpoint */
+.node-tools.round {
+  padding: 0;
+  border-radius: 99px;
+  transform: translate(-50%, -50%);
+}
+
+.node-tools.round button {
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 99px;
+}
+
+/* canvas chrome */
+
+.zoom,
+.hints {
+  position: absolute;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--r);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  cursor: default;
+}
+
+.corner {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.corner .zoom {
+  position: static;
+}
+
+.zoom {
+  gap: 2px;
+  padding: 3px;
+}
+
+.zoom button {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: calc(var(--r) - 3px);
+  color: var(--dim);
+  font: 500 11.5px var(--mono);
+}
+
+.zoom button:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.hints {
+  left: 14px;
+  gap: 16px;
+  padding: 7px 12px;
+  color: var(--dim);
+  font-size: 11.5px;
+}

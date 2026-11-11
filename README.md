@@ -48,7 +48,7 @@ keys, `Z`/`X` shift the octave. Load or drop an audio file on a pad to play it.
 | `src/components/`, `src/hooks/`, `src/App.tsx` | The sound check UI (temporary) |
 | `docs/research/` | Research reports (libraries, instrument banks, landscape) and `reports.json`, the card text for the rendered index |
 | `scripts/render-docs.mjs` | Markdown-to-HTML renderer for those reports (no dependencies) |
-| `mockups/` | Interface mockups: plain HTML, CSS and JS, one folder per mockup, opened directly in a browser |
+| `mockups/` | Interface mockups: plain HTML, CSS and JS, opened directly in a browser. `mockups/app` is the unified mockup of the whole app, specified in `mockups/SPEC.md`; `01` to `03` are the earlier steps |
 
 Audio code that needs a running `AudioContext` is checked in a browser; logic
 worth unit-testing is kept in modules that import Tone.js for types only.

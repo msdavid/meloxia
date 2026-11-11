@@ -1,0 +1,327 @@
+/* Song flow (area A), part 2: the section panel's Flow tab and the path strip along the bottom of the canvas. */
+
+/* ---------- Flow tab ---------- */
+
+.flow-exits,
+.flow-ins {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow-exit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  cursor: pointer;
+}
+
+.flow-exit:hover {
+  border-color: var(--faint);
+}
+
+.flow-exit.dragging {
+  border-color: var(--accent);
+  opacity: 0.85;
+}
+
+.flow-exit .flow-grip {
+  color: var(--faint);
+  cursor: grab;
+}
+
+.flow-exit > b {
+  color: var(--faint);
+  font: 700 11px var(--mono);
+}
+
+.flow-to {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.flow-to i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: hsl(var(--h) var(--is) var(--il));
+}
+
+.flow-rule {
+  color: var(--dim);
+  font-size: 11.5px;
+}
+
+.flow-ins li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 8px;
+  font-size: 12.5px;
+}
+
+.flow-h {
+  margin: 16px 0 0;
+  color: var(--faint);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.side-empty {
+  color: var(--faint);
+  font-size: 12.5px;
+}
+
+/* ---------- path strip along the bottom of the canvas ---------- */
+
+.path-strip {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 6px 0 12px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  cursor: default;
+}
+
+.stage.side-open .path-strip {
+  right: calc(14px + 380px + 14px);
+}
+
+/* a narrow strip keeps room for the path: no label, short choice names (their tooltips have the full ones) */
+.path-strip {
+  container: strip / inline-size;
+}
+
+@container strip (max-width: 720px) {
+  .plabel,
+  .pwide {
+    display: none;
+  }
+}
+
+/* the hints and the zoom corner move up to make room for the strip */
+.canvas .hints,
+.canvas .corner {
+  bottom: 70px;
+}
+
+/* "100%" and "76%" take the same room, so the corner doesn't shift when the view is fitted */
+#zoom-label {
+  min-width: 48px;
+}
+
+.plabel,
+.pempty {
+  flex: none;
+  color: var(--faint);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pempty {
+  flex: 1;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pwrap {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+}
+
+.ppath {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* more path to one side: it fades out there, with an arrow to scroll to it */
+.pwrap.more-back .ppath {
+  mask-image: linear-gradient(to right, transparent 0, #000 36px);
+}
+
+.pwrap.more-fwd .ppath {
+  mask-image: linear-gradient(to left, transparent 0, #000 36px);
+}
+
+.pwrap.more-back.more-fwd .ppath {
+  mask-image: linear-gradient(to right, transparent 0, #000 36px, #000 calc(100% - 36px), transparent 100%);
+}
+
+.pscroll {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--dim);
+}
+
+.pscroll:hover {
+  color: var(--text);
+}
+
+.pscroll svg.i {
+  width: 11px;
+  height: 11px;
+}
+
+.pscroll.back {
+  left: 0;
+}
+
+.pscroll.fwd {
+  right: 0;
+}
+
+.pwrap.more-back .pscroll.back,
+.pwrap.more-fwd .pscroll.fwd {
+  display: grid;
+}
+
+.pchip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 99px;
+  border: 1px solid color-mix(in oklab, hsl(var(--h, 0) var(--is) var(--il)) 55%, var(--line));
+  background: color-mix(in oklab, hsl(var(--h, 0) var(--is) var(--il)) 18%, var(--surface));
+  color: var(--text);
+  font: 600 11.5px var(--font);
+  white-space: nowrap;
+}
+
+.pchip.small {
+  height: 16px;
+  padding: 0 6px;
+  font-size: 10px;
+}
+
+.pchip.tempo {
+  border-style: dashed;
+  background: transparent;
+  font-family: var(--mono);
+}
+
+.pchip svg.i {
+  width: 11px;
+  height: 11px;
+}
+
+.pchip.past {
+  opacity: 0.45;
+}
+
+.pchip.now,
+.pstack.now {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.pstack {
+  display: grid;
+  flex: none;
+  gap: 2px;
+  padding: 2px 6px;
+  border-radius: var(--r);
+  border-left: 2px solid var(--faint);
+  border-right: 2px solid var(--faint);
+}
+
+.pstack.past {
+  opacity: 0.45;
+}
+
+.prow {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.pchip em,
+.prow em {
+  color: var(--dim);
+  font: 600 10px var(--mono);
+  font-style: normal;
+}
+
+.pdice,
+.pcued {
+  display: inline-flex;
+  color: var(--accent);
+  font-style: normal;
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.parr {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-top: 1.5px solid var(--faint);
+  border-right: 1.5px solid var(--faint);
+  rotate: 45deg;
+}
+
+.pend {
+  flex: none;
+  color: var(--dim);
+  font: 600 11.5px var(--font);
+  white-space: nowrap;
+}
+
+.pend.endless {
+  color: var(--accent);
+}
+
+.pctl {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.pctl .seg button {
+  padding: 0 9px;
+  font-size: 11.5px;
+}

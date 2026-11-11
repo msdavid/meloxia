@@ -1,0 +1,351 @@
+/* MIDI controllers (area D). Reuses the library's layout pieces (.lib-detail, .lib-actions, .imp-fmt). */
+
+.midi-dialog .dialog-body {
+  position: relative;
+}
+
+.midi-tabs {
+  margin: 4px 0 14px;
+}
+
+.midi-perm {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  max-width: 520px;
+  margin: 40px auto;
+  text-align: center;
+  color: var(--dim);
+}
+
+.midi-perm > svg.i {
+  width: 36px;
+  height: 36px;
+  color: var(--accent);
+}
+
+.midi-perm h3 {
+  margin: 8px 0 0;
+  color: var(--text);
+}
+
+.midi-perm small {
+  margin-top: 10px;
+  color: var(--faint);
+}
+
+.midi-prompt {
+  position: absolute;
+  top: 8px;
+  left: 18px;
+  z-index: 2;
+  display: grid;
+  gap: 10px;
+  width: 340px;
+  padding: 14px 16px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  background: var(--surface-3);
+  box-shadow: var(--shadow);
+  animation: dialog-in 0.18s ease-out;
+}
+
+.midi-prompt small {
+  color: var(--faint);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.midi-prompt div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* ---------- devices ---------- */
+
+.midi-devs {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.midi-devs > nav {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding: 8px;
+}
+
+.midi-dev {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2px 10px;
+  padding: 8px 10px;
+  border-radius: var(--r);
+  text-align: left;
+  color: var(--text);
+}
+
+.midi-dev:hover {
+  background: var(--surface-2);
+}
+
+.midi-dev.on {
+  background: var(--surface-2);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.midi-dev > span {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.midi-led {
+  grid-row: span 2;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3fb950;
+  box-shadow: 0 0 6px #3fb950;
+}
+
+.midi-plug {
+  justify-self: start;
+  height: auto;
+  min-height: 26px;
+  white-space: normal;
+  text-align: left;
+  margin-top: 6px;
+}
+
+.midi-devs .lib-detail {
+  border-left: 1px solid var(--line);
+}
+
+.midi-port,
+.midi-generic {
+  margin: 0 0 12px;
+  color: var(--dim);
+}
+
+.midi-generic {
+  padding: 8px 10px;
+  border-radius: var(--r);
+  background: var(--surface-2);
+}
+
+.midi-does {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px 14px;
+  margin: 0;
+}
+
+.midi-does dt {
+  font-weight: 600;
+}
+
+.midi-does dd {
+  margin: 0;
+  color: var(--dim);
+}
+
+.midi-ask {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in oklab, var(--accent) 50%, var(--line));
+  border-radius: var(--r);
+}
+
+.midi-ask p {
+  margin: 4px 0 10px;
+  color: var(--dim);
+}
+
+.midi-ask .btn + .btn {
+  margin-left: 6px;
+}
+
+.midi-lights {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.midi-lights p {
+  color: var(--dim);
+}
+
+.midi-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 14px);
+  gap: 3px;
+  padding: 8px;
+  border-radius: 6px;
+  background: #111;
+}
+
+.midi-grid i {
+  height: 14px;
+  border-radius: 3px;
+  background: #2a2a2a;
+  transition: background 0.1s;
+}
+
+.midi-grid i.lit {
+  background: color-mix(in oklab, var(--accent) 70%, #111);
+}
+
+.midi-grid i.head {
+  background: #555;
+}
+
+.midi-grid i.head.lit {
+  background: #fff;
+}
+
+/* ---------- mappings ---------- */
+
+.midi-maps {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.midi-maps th {
+  padding: 6px 10px;
+  color: var(--faint);
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.midi-maps td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: middle;
+}
+
+.midi-maps td small {
+  display: block;
+  color: var(--faint);
+}
+
+/* ---------- timing ---------- */
+
+.midi-timing {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  align-items: start;
+  max-width: 760px;
+}
+
+.midi-timing h3 {
+  margin: 0 0 4px;
+}
+
+.midi-timing p {
+  color: var(--dim);
+}
+
+.midi-pulse {
+  display: grid;
+  place-items: center;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.midi-pulse i {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--surface-3);
+}
+
+.midi-pulse.run i {
+  background: var(--accent);
+  animation: midi-beat var(--beat) linear infinite;
+}
+
+@keyframes midi-beat {
+  0% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+  40%,
+  100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+}
+
+.midi-result {
+  margin: 12px 0;
+  color: var(--text) !important;
+}
+
+.midi-result.dim {
+  color: var(--faint) !important;
+}
+
+.midi-json pre {
+  max-height: 260px;
+  margin: 8px 0 0;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dim);
+}
+
+/* ---------- MIDI learn: a banner over the app, targets outlined ---------- */
+
+.midi-learnbar {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 8px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--accent);
+  background: var(--surface-3);
+  box-shadow: var(--shadow);
+  transform: translateX(-50%);
+  animation: fade-in 0.15s ease-out;
+}
+
+.midi-learnbar[hidden] {
+  display: none;
+}
+
+.midi-learnbar > svg.i {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.midi-learnbar span {
+  color: var(--dim);
+}
+
+.midi-learning :is(input[type="range"], button.switch, [data-learnable], .seg button):not(.midi-learnbar *) {
+  outline: 1px dashed color-mix(in oklab, var(--accent) 60%, transparent);
+  outline-offset: 2px;
+  cursor: crosshair;
+}
+
+.midi-learning .midi-target {
+  outline: 2px solid var(--accent) !important;
+}

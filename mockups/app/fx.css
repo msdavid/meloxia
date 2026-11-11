@@ -1,0 +1,436 @@
+/* Mockup 03: the side panel (section settings, song effects), its buttons and the canvas chips. */
+
+/* ---------- the side panel, docked on the right of the stage ---------- */
+
+.side {
+  --c: hsl(var(--h) var(--is) var(--il));
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 30;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  width: 380px;
+  overflow: hidden;
+  border-radius: calc(var(--r-lg) + 2px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 90px rgb(0 0 0 / 0.5);
+}
+
+[data-look="paper"] .side {
+  box-shadow: 0 24px 70px rgb(70 55 30 / 0.22);
+}
+
+.side[hidden] {
+  display: none;
+}
+
+.side.song {
+  --c: var(--accent);
+}
+
+.side.in {
+  animation: side-in 0.2s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+@keyframes side-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+/* inside the editor the grid makes room; on the canvas the panel covers the right edge */
+.stage.side-open .editor {
+  right: calc(14px + 380px + 10px);
+}
+
+.stage.side-open .corner {
+  right: calc(14px + 380px + 14px);
+}
+
+.side-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px 10px 16px;
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--c) 9%, var(--surface)), var(--surface));
+}
+
+.side-head .swatch {
+  flex: none;
+}
+
+.side-ico {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--c) 18%, transparent);
+  color: var(--text);
+}
+
+.side-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.side-title small {
+  display: block;
+  color: var(--dim);
+  font-size: 11px;
+}
+
+.side-title b {
+  display: block;
+  overflow: hidden;
+  font-size: 15px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.side-tabs {
+  margin: 0 14px 6px;
+}
+
+.side-tabs button {
+  flex: 1;
+  padding: 4px 2px;
+}
+
+.side-tabs em {
+  font-style: normal;
+  font-family: var(--mono);
+}
+
+.side-body {
+  overflow: auto;
+  padding: 4px 16px 18px;
+}
+
+.side-note,
+.grp-help {
+  display: block;
+  margin: 6px 0 10px;
+  color: var(--dim);
+  font-size: 11.5px;
+}
+
+/* a group of controls under one heading, with its Song / Own chip */
+.grp {
+  padding: 10px 0 8px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.grp:first-child,
+.grp-pair .grp {
+  border-top: 0;
+}
+
+.grp-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.grp-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+  margin-bottom: 6px;
+}
+
+.grp-head b {
+  flex: 1;
+  font-size: 12.5px;
+}
+
+.grp .grp-help {
+  margin: -2px 0 6px;
+}
+
+.inh,
+.own,
+.scope {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.inh,
+.scope {
+  border: 1px solid var(--line);
+  color: var(--dim);
+}
+
+.scope {
+  font-weight: 500;
+}
+
+.own {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  color: var(--text);
+}
+
+.own:hover {
+  background: color-mix(in oklab, var(--accent) 34%, transparent);
+}
+
+.own svg.i {
+  width: 11px;
+  height: 11px;
+}
+
+.side .ctl {
+  padding: 4px 0 6px;
+  border-top: 0;
+}
+
+.side .ends {
+  color: var(--dim);
+}
+
+/* only sliders with a natural middle get the centre mark */
+.side .ends:not(.mid)::after {
+  display: none;
+}
+
+.side .ends span {
+  width: 50px;
+}
+
+.txt {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: var(--r);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font: inherit;
+  user-select: text;
+}
+
+.txt:focus {
+  outline: 2px solid var(--c);
+  outline-offset: -1px;
+}
+
+.hues {
+  display: flex;
+  gap: 8px;
+}
+
+.hue {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: hsl(var(--h) var(--is) var(--il));
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.hue.on {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text);
+}
+
+.seg-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.side .stepper output {
+  min-width: 64px;
+}
+
+/* stacked choices, each with a round mark */
+.choices {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.choices button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 10px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  color: var(--dim);
+  text-align: left;
+}
+
+.choices button:hover {
+  color: var(--text);
+}
+
+/* --c is the instrument's colour inside its panel; elsewhere the look's accent */
+.choices button.on {
+  border-color: var(--c, var(--accent));
+  background: color-mix(in oklab, var(--c, var(--accent)) 10%, transparent);
+  color: var(--text);
+}
+
+.choices i {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--faint);
+}
+
+.choices .on i {
+  border: 4px solid var(--c, var(--accent));
+}
+
+/* the swing picture: eight steps, every second one pushed late */
+.swing-pic {
+  position: relative;
+  height: 30px;
+  margin-top: 8px;
+  border-radius: var(--r);
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+}
+
+.swing-pic i {
+  position: absolute;
+  bottom: 5px;
+  left: calc((var(--k) + 0.5) * 12.5%);
+  width: 4px;
+  height: 18px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: var(--c);
+  transition: left 0.08s;
+}
+
+.swing-pic i.off {
+  left: calc((var(--k) + 0.5 + var(--sw) * 0.45) * 12.5%);
+  height: 11px;
+  opacity: 0.75;
+}
+
+/* the mix: one line per instrument */
+.mix-row {
+  --c: hsl(var(--h) var(--is) var(--il));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.mix-row .glyph {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: color-mix(in oklab, var(--c) 18%, transparent);
+  color: var(--c);
+}
+
+.mix-name {
+  width: 78px;
+  flex: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.mix-row input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  accent-color: var(--c);
+}
+
+.mix-row output,
+.fxn-row output {
+  flex: none;
+  color: var(--dim);
+  font: 600 11px var(--mono);
+  text-align: right;
+}
+
+.mix-row output {
+  width: 40px;
+}
+
+.mix-row.muted .mix-name,
+.mix-row.muted input {
+  opacity: 0.45;
+}
+
+/* ---------- top bar, editor header and canvas blocks ---------- */
+
+.top-btn,
+.ed-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px 0 9px;
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+  color: var(--dim);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.top-btn:hover,
+.ed-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.top-btn.on,
+.ed-btn.on {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  color: var(--text);
+}
+
+.ed-btn {
+  margin-left: 10px;
+}
+
+.ed-btn + .loop-btn {
+  margin-left: 0;
+}
+
+.node.has-chips {
+  grid-template-rows: auto auto 1fr auto;
+  gap: 6px;
+}
+
+.node-chips {
+  display: flex;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.node-chips span {
+  flex: none;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--c) 16%, var(--surface-2));
+  color: var(--text);
+  font: 600 10px/16px var(--mono);
+}
+
+/* paper's dim ink is too faint on its darker surfaces (tabs, menus, the inspector): darken it there */
+[data-look="paper"] :is(.tabs button:not(.on, :hover), .fx-menu small, .insp small, .fxn-row output) {
+  color: #645d51;
+}
