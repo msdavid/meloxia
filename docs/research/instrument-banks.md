@@ -2,7 +2,7 @@
 
 Research date: 2026-11-11. Status: catalogue only. Nothing was downloaded, installed or wired into the app.
 
-Synthia runs Tone.js 15 in the browser and will play only sampled instruments and drums from banks we are allowed to download (scope set 2026-11-11: the synthesizer is out for now, so synth material is reduced to Appendix A). It is for Mauro's personal, non-commercial use, but a publicly served build redistributes every sample it loads, so the **Re-host publicly?** column matters as much as the sound.
+Synthia runs Tone.js 15 in the browser and will play only sampled instruments and drums from banks we are allowed to download (scope set 2026-11-11: the synthesizer is out for now, so synth material is reduced to Appendix A). It is for the owner's personal, non-commercial use, but a publicly served build redistributes every sample it loads, so the **Re-host publicly?** column matters as much as the sound.
 
 ## How to read this
 
@@ -234,7 +234,7 @@ Context caveat that applies to every non-Tone player: Tone 15 builds its context
 
 ## Packs: bundled vs local-only
 
-Rule (agreed with synthia-1d on 2026-11-11, now that the repository is public at github.com/msdavid/synthia):
+Rule (agreed with the project lead on 2026-11-11, now that the repository is public at github.com/msdavid/synthia):
 
 - Only banks whose **Re-host publicly?** cell is "yes" may be committed to git or ship with a publicly served build. Those are marked **bundled**.
 - Banks with no licence, an unclear licence, or a licence that forbids re-hosting go in a separate **local-only** pack. That pack is never committed to git and never included in a publicly served build. The loader must treat it as optional.
@@ -247,7 +247,7 @@ Rule (agreed with synthia-1d on 2026-11-11, now that the repository is public at
 
 ## Download and personal use
 
-Since the scope change, the first question for every bank is whether its licence clearly lets Mauro download it and use it privately. Public hosting is the second question (the **Re-host** column).
+Since the scope change, the first question for every bank is whether its licence clearly lets the owner download it and use it privately. Public hosting is the second question (the **Re-host** column).
 
 - **Clearly yes:**
   - Everything under CC0, CC BY, CC BY-SA, MIT or the Unlicense, plus GeneralUser GS.
@@ -262,7 +262,7 @@ Since the scope change, the first question for every bank is whether its licence
   - Decent Samples, MusicRadar SampleRadar and BPB packs: use in music, no redistribution.
   - §8 also has a per-row verdict. Only Aegean Symphonic Orchestra is unclear there.
 - **Yes for private use, but they could never be hosted publicly:** Philharmonia, Pianobook, Goldbaby, Samples From Mars, 99Sounds, Arachno, Timbres of Heaven, Musyng Kite, Decent Samples, SampleRadar, BPB packs.
-- **Not clearly permitted** (no licence, or the grant can't be traced). Mauro has approved using these anyway (see Decisions):
+- **Not clearly permitted** (no licence, or the grant can't be traced). The owner has approved using these anyway (see Decisions):
   - No licence or provenance: tidal-drum-machines, Dirt-Samples, Drum Abuse, danigb's other drum machines.
   - Mellotron Archive CD-ROM: `"license": "unknown"`, and it looks like a commercial CD.
   - Untraceable grants: smpldsnds/drum-machines and oramics (self-applied "public domain"), Terkelsen Marimba (no licence).
@@ -280,7 +280,7 @@ Since the scope change, the first question for every bank is whether its licence
    - Synthia will be used by other people from a public address, non-commercially.
    - A public build serves **bundled** banks only.
    - Non-commercial licences (CC BY-NC, BY-NC-SA) are acceptable.
-   - Banks with no licence, or that forbid re-hosting, never ship. Mauro approved using them locally, and users can add them themselves through import.
+   - Banks with no licence, or that forbid re-hosting, never ship. The owner approved using them locally, and users can add them themselves through import.
 4. **Size:** start small and curated, and lazy-load per instrument.
 5. **Credits:** every bank's credit line lives in the manifest, so the in-app credits page can be generated from it.
 6. **Imported packs are stored as the original audio files, untouched.** No transcoding on import: fastest import, no quality loss, no loop drift. A "compact" option can come later if storage becomes a problem.
@@ -338,7 +338,7 @@ The headroom went to quality, as decided: Salamander at 8 layers and pizzicato f
 
 ## Importing a pack
 
-Requirement (Mauro, via synthia-1d): users import packs they found online into their own browser storage (OPFS). The aim is to support every format in circulation, added one at a time behind a single import pipeline. The most popular formats are mandatory. Researched 2026-11-11. The lead re-checked the decisive points:
+Requirement (the owner, via the project lead): users import packs they found online into their own browser storage (OPFS). The aim is to support every format in circulation, added one at a time behind a single import pipeline. The most popular formats are mandatory. Researched 2026-11-11. The lead re-checked the decisive points:
 - spessasynth_core's README: "Read and write SF2/SF3 files", "Convert DLS to SF2".
 - ConvertWithMoss's format notes: Kontakt formats "are sadly proprietary and therefore no documentation is publicly available", and Ableton's own packs' "AIFF files use a proprietary encryption algorithm".
 

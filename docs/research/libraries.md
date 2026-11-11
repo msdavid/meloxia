@@ -1,6 +1,6 @@
 # Libraries and engines for Synthia
 
-Research of 11 Nov 2026 (worker3, for synthia-1d). Sources:
+Research of 11 Nov 2026 (worker3, for the project lead). Sources:
 
 - versions, publish dates, licences, `types` fields and peer dependencies: the npm registry (`registry.npmjs.org/<pkg>`);
 - last push, open issues + PRs and stars: the GitHub API;
@@ -23,26 +23,26 @@ Scope:
 
 | # | Decision | By |
 |---|---|---|
-| 1 | Tone pre-releases are allowed: pin an exact `tone@15.5.66` (`next`, 2026-10-31) and upgrade deliberately. This replaces "stay on `latest` 15.1.22". | Mauro, 11 Nov |
-| 2 | Chrome is the only supported browser. Safari and Firefox gaps (Web MIDI, File System Access) are not worked around. | Mauro, 11 Nov |
-| 3 | Export: **WAV and MP3 required**; Opus/AAC optional. | Mauro, via synthia-1d |
-| 4 | UI primitives: Base UI. | synthia-1d; Mauro left it to worker3, who keeps it |
-| 5 | Step grid: DOM grid with one Canvas overlay for the playhead and hit flashes, and per-cell updates (measured, §5). | synthia-1d, from the benchmark |
-| 6 | Join rule is a setting on each split, with three choices: **wait for the longest branch** (default), stop with the shortest, or a named leader branch decides. A second setting says what shorter branches do meanwhile: **keep looping** (default) or fall silent. The conductor supports all of these. | synthia-1d |
-| 7 | Tempo and swing inside a split: one value for the group, taken from the leader branch (default: the longest). Per-section tempo is ignored inside a split, and the interface says so. | synthia-1d |
-| 8 | Voice cap, voice stealing, choke groups and lean voice chains are requirements of the first engine code, not optimisations. | synthia-1d |
-| 9 | Export uses chunked `OfflineAudioContext` rendering. The `suspend()` spike is the first engine task after the conductor. | synthia-1d |
-| 10 | A shared song-level room (reverb) send is an implementation choice that the effects design allows; it is not a requirement. | synthia-1d |
-| 11 | ~~Extension contracts are plain-data and async.~~ Superseded by 16: contracts are versioned TypeScript interfaces, synchronous hooks allowed; built-ins implement them in-process. | synthia-1d |
-| 12 | ~~Three channels only, no synchronous interception, no plugin DOM.~~ Superseded by 16. | synthia-1d |
-| 13 | Stable ids everywhere, and a versioned project schema with a namespace per plugin. Rack slots must be re-creatable in an offline context. Kept, as conventions (16). | synthia-1d |
-| 14 | ~~Plugin play-time rules async with a deadline.~~ Superseded by 16: plugin rules and hooks run in-process and synchronously, like built-ins. | synthia-1d |
-| 15 | ~~Tiered rollout with sandboxed iframes and a trust prompt for audio.~~ Superseded by 16. | synthia-1d |
-| 16 | **Plugins run with full trust in the main realm** (Obsidian model); vetting is the user's responsibility. Audio plugins allowed from the start. Supported surface: versioned registries, events, commands, synchronous before/after hooks (actions and play-time events) and UI in our DOM; internals reachable but unsupported. Conventions: commands for edits, stable ids, namespaced schema, offline-re-creatable rack slots. Safeguards: one install warning, a per-plugin off switch, start with all plugins disabled. No sandbox host, CSP or RPC proxy. | Mauro, via synthia-1d |
-| 17 | Plugins can alter the interface: add, reorder, hide or replace in named slots; override whole views; add menus and menu items (every right-click menu) and buttons; restyle through looks. Our own interface is built through the same slot, view and menu registries, and every plugin view has an error boundary with the built-in one as its fallback. | Mauro, via synthia-1d |
-| 18 | Canvas block types come from one registry (appearance, palette, ports, flow behaviour, length, editor, settings, saved form, export behaviour). Start, Section, Split and Join are defined through it. | Mauro, via synthia-1d |
-| 19 | A saved `.synthia` file is always complete: the song, every used instrument whole, with samples deduplicated by hash, effect settings, and the plugins it depends on. No "song only" variant. Size shown before saving; streaming write and read. On open, missing instruments join the library; embedded plugins trigger the install warning, with the option to open without them (shown inactive). Autosave references the local store. | Mauro, via synthia-1d |
-| 20 | Plugin manifests declare Android-style permissions (§11 list), and a `.synthia` file carries a root `manifest.json` of its instruments, plugins and their permissions. Opening a file shows one consent screen: accept all, accept per plugin, or open without plugins. Declarations are **shown, never enforced** (option a): headed "What this plugin's author says it does", with the fixed line "Synthia does not check or enforce this. Plugins can access everything in the app."; "Declares nothing" when empty. The sandbox hybrid was considered and rejected. | Mauro, via synthia-1d |
+| 1 | Tone pre-releases are allowed: pin an exact `tone@15.5.66` (`next`, 2026-10-31) and upgrade deliberately. This replaces "stay on `latest` 15.1.22". | The owner, 11 Nov |
+| 2 | Chrome is the only supported browser. Safari and Firefox gaps (Web MIDI, File System Access) are not worked around. | The owner, 11 Nov |
+| 3 | Export: **WAV and MP3 required**; Opus/AAC optional. | The owner, via the project lead |
+| 4 | UI primitives: Base UI. | The project lead; the owner left it to worker3, who keeps it |
+| 5 | Step grid: DOM grid with one Canvas overlay for the playhead and hit flashes, and per-cell updates (measured, §5). | The project lead, from the benchmark |
+| 6 | Join rule is a setting on each split, with three choices: **wait for the longest branch** (default), stop with the shortest, or a named leader branch decides. A second setting says what shorter branches do meanwhile: **keep looping** (default) or fall silent. The conductor supports all of these. | The project lead |
+| 7 | Tempo and swing inside a split: one value for the group, taken from the leader branch (default: the longest). Per-section tempo is ignored inside a split, and the interface says so. | The project lead |
+| 8 | Voice cap, voice stealing, choke groups and lean voice chains are requirements of the first engine code, not optimisations. | The project lead |
+| 9 | Export uses chunked `OfflineAudioContext` rendering. The `suspend()` spike is the first engine task after the conductor. | The project lead |
+| 10 | A shared song-level room (reverb) send is an implementation choice that the effects design allows; it is not a requirement. | The project lead |
+| 11 | ~~Extension contracts are plain-data and async.~~ Superseded by 16: contracts are versioned TypeScript interfaces, synchronous hooks allowed; built-ins implement them in-process. | The project lead |
+| 12 | ~~Three channels only, no synchronous interception, no plugin DOM.~~ Superseded by 16. | The project lead |
+| 13 | Stable ids everywhere, and a versioned project schema with a namespace per plugin. Rack slots must be re-creatable in an offline context. Kept, as conventions (16). | The project lead |
+| 14 | ~~Plugin play-time rules async with a deadline.~~ Superseded by 16: plugin rules and hooks run in-process and synchronously, like built-ins. | The project lead |
+| 15 | ~~Tiered rollout with sandboxed iframes and a trust prompt for audio.~~ Superseded by 16. | The project lead |
+| 16 | **Plugins run with full trust in the main realm** (Obsidian model); vetting is the user's responsibility. Audio plugins allowed from the start. Supported surface: versioned registries, events, commands, synchronous before/after hooks (actions and play-time events) and UI in our DOM; internals reachable but unsupported. Conventions: commands for edits, stable ids, namespaced schema, offline-re-creatable rack slots. Safeguards: one install warning, a per-plugin off switch, start with all plugins disabled. No sandbox host, CSP or RPC proxy. | The owner, via the project lead |
+| 17 | Plugins can alter the interface: add, reorder, hide or replace in named slots; override whole views; add menus and menu items (every right-click menu) and buttons; restyle through looks. Our own interface is built through the same slot, view and menu registries, and every plugin view has an error boundary with the built-in one as its fallback. | The owner, via the project lead |
+| 18 | Canvas block types come from one registry (appearance, palette, ports, flow behaviour, length, editor, settings, saved form, export behaviour). Start, Section, Split and Join are defined through it. | The owner, via the project lead |
+| 19 | A saved `.synthia` file is always complete: the song, every used instrument whole, with samples deduplicated by hash, effect settings, and the plugins it depends on. No "song only" variant. Size shown before saving; streaming write and read. On open, missing instruments join the library; embedded plugins trigger the install warning, with the option to open without them (shown inactive). Autosave references the local store. | The owner, via the project lead |
+| 20 | Plugin manifests declare Android-style permissions (§11 list), and a `.synthia` file carries a root `manifest.json` of its instruments, plugins and their permissions. Opening a file shows one consent screen: accept all, accept per plugin, or open without plugins. Declarations are **shown, never enforced** (option a): headed "What this plugin's author says it does", with the fixed line "Synthia does not check or enforce this. Plugins can access everything in the app."; "Declares nothing" when empty. The sandbox hybrid was considered and rejected. | The owner, via the project lead |
 
 ## 1. Audio engine
 
@@ -272,7 +272,7 @@ For a public app with no server, everything lives on the user's machine:
 
 ## 11. Plugin API
 
-Working design under review (synthia-1d):
+Working design under review (the project lead):
 
 - Internal registries from day one, and built-ins register through the same extension points as plugins. The points: instruments, effects, pack importers, note helpers and generators, connection rule types, exporters, commands and shortcuts, panel and toolbar contributions, themes.
 - An event bus for transport, edits, song-flow decisions and MIDI.
@@ -304,7 +304,7 @@ Strudel and other web music tools were not checked.
 
 ### Architecture (decided: full trust)
 
-Mauro's decision, 11 Nov: plugins get access to the entire application, and vetting a plugin is the user's responsibility. This is the Obsidian model. The sandbox tiers drafted earlier the same day are dropped, and the precedents and sandboxing tables above remain as the record of what was given up.
+The owner's decision, 11 Nov: plugins get access to the entire application, and vetting a plugin is the user's responsibility. This is the Obsidian model. The sandbox tiers drafted earlier the same day are dropped, and the precedents and sandboxing tables above remain as the record of what was given up.
 
 - **Where plugins run.** In the main realm, as ES modules imported by the app, with the same powers as our own code. Audio plugins (effects, synths) are allowed from the start: their DSP is an `AudioWorkletProcessor` module loaded into our context, and the host or the plugin creates the `AudioWorkletNode` and connects it into a rack slot.
 - **Supported surface.** It is versioned and is the only part we keep stable:
@@ -325,7 +325,7 @@ Mauro's decision, 11 Nov: plugins get access to the entire application, and vett
 
 ### Altering the interface: slots, view overrides, menus, looks
 
-Plugins can **add, reorder, hide or replace** what the interface shows (Mauro's requirement). This works cleanly in React 19 only if our own interface is assembled through the same machinery from day one.
+Plugins can **add, reorder, hide or replace** what the interface shows (the owner's requirement). This works cleanly in React 19 only if our own interface is assembled through the same machinery from day one.
 
 - **Slot registry.** Named slots throughout the app: `topbar`, `palette`, `canvas.block.<type>`, `canvas.connection`, `editor.toolbar`, `editor.row-header`, `note-inspector`, `side-panel`, `effect-card`, and so on.
   - Each slot renders `<Slot name context>`, which resolves a list of contributions `{ id, slot, order, when?(context), component }`.
@@ -433,7 +433,7 @@ Every plugin manifest declares what it uses, under `permissions`:
 
 A `.synthia` file carries a root `manifest.json` listing everything it contains and needs: instruments (name, sample count, size), plugins (id, version, SHA-256, declared permissions, and which blocks and effects use them), and the total size. **Opening a file shows one consent screen** with that list: accept all, accept per plugin, or open without plugins (their blocks and effects stay inactive).
 
-**Decided (Mauro, option a): declarations are shown, never enforced.** Every plugin runs with full trust in the main realm (decision 16). The consent screen is worded so it does not over-promise:
+**Decided (the owner, option a): declarations are shown, never enforced.** Every plugin runs with full trust in the main realm (decision 16). The consent screen is worded so it does not over-promise:
 
 - Each plugin's list is headed **"What this plugin's author says it does"**.
 - It carries the fixed line **"Synthia does not check or enforce this. Plugins can access everything in the app."**

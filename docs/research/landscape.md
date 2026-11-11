@@ -1,6 +1,6 @@
 # Name check and similar apps
 
-Research of 11 Nov 2026 (worker3 with two research agents, for synthia-1d). Facts come from pages and searches made that day, and what could not be confirmed is marked UNVERIFIED in each part.
+Research of 11 Nov 2026 (worker3 with two research agents, for the project lead). Facts come from pages and searches made that day, and what could not be confirmed is marked UNVERIFIED in each part.
 
 ## A. Is the name "Synthia" taken?
 
@@ -143,3 +143,31 @@ Dropped: Melodrive (only search results; one aggregator lists the company as clo
 - SoundFont/SFZ import: not confirmed for any browser product. Per-note chance in Live 12, Strudel probability functions (degradeBy etc.), OP-Z probability: not confirmed on the pages read.
 - Smol Sequencer: only module names and buttons seen; the graph and rules model is unverified.
 - Soundtrap export, Audiotool export formats, JummBox export formats, Sonic Pi WAV recording: not confirmed.
+
+## C. Candidate names
+
+Checked 2026-11-11; quick checks only, not legal advice.
+
+| Name | Music collisions | Other products | Trademarks (source) | .com | .app | .io | npm | GitHub | Verdict and key finding (link) |
+|---|---|---|---|---|---|---|---|---|---|
+| Songloom | SongLoom, free AI song generator (songloom.app, 50 credits, paid plans); "Songloom: AI Song Maker" app listing; Song Loom gift-song service (songloom.com) | None found | No hit in one aggregator search (trademarkdir/markinton results, secondary); Justia blocked | Taken: Song Loom custom love songs | Taken: SongLoom AI music generator | No resolve | 404 free | 404 free | **Risky**: same name, same field, live product at https://songloom.app |
+| Tunepath | None found (nearest: Tunepal, TuneTransit, TuneTrack) | tunepath.com = Tunepath Technologies, IT firm, Chennai | No hit (secondary search) | Taken: IT company | No resolve | No resolve | 404 free | Taken: user "tunepath" (created 2019, 2 repos) | **Crowded but usable**: .com held by unrelated IT firm, GitHub name gone, https://tunepath.com |
+| Stitchbeat | None found (nearest: StackBeat esolang, Stitch NIME 2024) | None found | No hit (secondary search) | Resolves, redirects to atom.com name-for-sale page (403 Cloudflare) | No resolve | No resolve | 404 free | 404 free | **Clean**: no product found; .com is a for-sale listing https://www.atom.com/name/StitchBeat |
+| Weavetone | WeaveTone, macOS sample/kit tool for MPC and Octatrack, early access, founded 2026 | None found | No hit (secondary search); site shows only (c) 2026 | Taken: WeaveTone site | No resolve | No resolve | 404 free | 404 free (site links github.com/weavetone, which 404s) | **Risky**: same name, music tools, same year, https://weavetone.com |
+| Tinkerbeat | None found (nearest: TweakyBeat iOS; Tinkerball game) | None found | No hit (secondary search) | No resolve | No resolve | No resolve | 404 free | 404 free | **Clean**: nothing found anywhere, all three domains unregistered-looking https://www.google.com/search?q=tinkerbeat (web search found no page) |
+
+## Recommendation
+
+1. Tinkerbeat: cleanest, nothing found on any axis, all three domains and npm and GitHub free (confirm .com availability at a registrar before relying on it, since no-resolve is not proof of unregistered).
+2. Stitchbeat: clean on products; .com is listed for sale, .app and .io do not resolve, npm and GitHub free.
+3. Tunepath: usable but .com and GitHub are held by others.
+4. Songloom and Weavetone: avoid. Both have live same-field products with the identical name.
+
+## UNVERIFIED
+
+- Official trademark registers (USPTO, EUIPO, WIPO): not reached. Justia was Cloudflare-blocked; only one generic aggregator-style search (trademarkdir, markinton, gleanmark results) was run, and it returned no hits for any of the five names. This is weak evidence.
+- "No resolve" for a domain is not proof it is unregistered (it may be registered without DNS records).
+- Tinkerbeat and Stitchbeat store listings (App Store, Google Play) were not searched individually; WebSearch only.
+- Owner of songloom.app, weavetone.com and tunepath.com: not stated on the pages.
+- Songloom listing at https://mwm.ai/apps/songloom-ai-song-maker/6759814466 came from search results only, not fetched.
+- Tinkerbeat link in the table points to a search, not a page; no source page exists.

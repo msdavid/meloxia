@@ -1,8 +1,8 @@
 [
   {
     "file": "landscape.md",
-    "summary": "Is the name Synthia taken, and which existing products come closest to what we are building.",
-    "verdict": "Name: crowded and risky. synthia.app is a live browser music-maker, and Synthesia is one letter away. Similar apps: nothing combines a rule-carrying section graph with per-note step grids for non-musicians; the closest are Ableton Live follow actions, Wwise/FMOD and Nodal."
+    "summary": "Is the name Synthia taken, which existing products come closest to what we are building, and five candidate names.",
+    "verdict": "Synthia: crowded and risky (synthia.app is a live browser music-maker; Synthesia is one letter away). Candidates: Tinkerbeat and Stitchbeat clean; Tunepath usable; Songloom and Weavetone risky. Similar apps: nothing combines a rule-carrying section graph with per-note step grids for non-musicians."
   },
   {
     "file": "libraries.md",
@@ -16,7 +16,7 @@
   },
   {
     "file": "midi-controllers.md",
-    "title": "MIDI controllers",
-    "summary": "MIDI controllers and how Synthia should support them."
+    "summary": "How Synthia supports MIDI controllers: what Web MIDI allows in Chrome, what each controller family sends, 31 current controllers with their programmer docs, and how other software maps them.",
+    "verdict": "Any keyboard plays and MIDI learn covers any knob out of the box; JSON profiles ship in phases, starting with the MPK mini family, MiniLab 3, Launchkey MK4, nanoKONTROL2 and APC mini mk2; SysEx only on demand; Chrome only."
   }
 ]
