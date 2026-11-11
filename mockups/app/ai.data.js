@@ -8,7 +8,8 @@
  *   SUGGEST_PROVIDERS       id → { name, models } (OpenAI and OpenRouter list their models from the account, so none are named)
  *   suggestRequest(row, ask, mode)   the request as it would be sent, built from the open section's real state
  *   suggestReply(row, ask, attempt)  a rule-made reply { notes } for that row only; attempt 0, 1, 2 give the three variants
- *   fitSuggestion(row, reply, mode)  → { cells, count, leftOut }: the notes that would land in the row, as row cells
+ *   fitSuggestion(row, reply, mode)  → { cells, count, leftOut, taken }: the notes that would land in the row, as row
+ *                           cells; leftOut did not fit (past the end, or on top of each other), taken met the row's own notes under Add
  *   writeSuggestion(row, cells, mode) writes them into the row
  * Notes in a request or reply use plain-English fields: step (1 is the first), note ("C2") or hit (drums), length
  * (steps, tunes only), loudness (1 to 100), chance (%), timing (−50 early to 50 late), repeat; glide only when on.
@@ -44,8 +45,8 @@ const suggestWhere = () => `${SUGGEST_PROVIDERS[SUGGEST.provider].name} · ${SUG
 /* ---------- the request: the section as it is ---------- */
 
 const familyOf = (id) => {
-  const it = typeof libOf === "function" ? libOf(id) : null;
-  return (it && LIB_FAMILIES.find(([key]) => key === it.fam)?.[1]) ?? inst(id).tag ?? inst(id).group;
+  const it = libOf(id);
+  return it ? libFamName(it.fam) : (inst(id).tag ?? inst(id).group);
 };
 
 function noteOut(n, s, pitched) {
@@ -196,33 +197,32 @@ const noteIn = (o, pitched) => {
   return pitched ? tone(pitchOf(o.note), o.length, { ...extra, glide: !!o.glide }) : note(extra);
 };
 
-/** The notes that would land: inside the section, and under Add only where the row has room. */
+/** The notes that would land: inside the section, and under Add only where the row has room. Every note of the reply
+ *  is counted or reported, never dropped in silence. */
 function fitSuggestion(target, reply, mode) {
   const steps = target.cells.length;
   const pitched = melodic(inst(target.inst));
   const cells = Array.from({ length: steps }, () => (pitched ? [] : null));
+  const add = mode !== "replace";
   let count = 0;
   let leftOut = 0;
+  let taken = 0;
   for (const o of reply.notes) {
     const s = o.step - 1;
-    if (s < 0 || s >= steps) {
-      leftOut++;
-      continue;
+    const n = s >= 0 && s < steps ? noteIn(o, pitched) : null;
+    if (n && pitched) n.len = Math.min(n.len, steps - s);
+    // under Add, a note never lands on one of the row's own (the same pitch, or the same drum step)
+    const meets = n && add && (pitched ? !isFree(target, n.pitch, s, n.len, null) : !!target.cells[s]);
+    const fits = n && (pitched ? isFree({ cells }, n.pitch, s, n.len, null) : !cells[s]);
+    if (meets) taken++;
+    else if (!fits) leftOut++;
+    else {
+      if (pitched) cells[s].push(n);
+      else cells[s] = n;
+      count++;
     }
-    const n = noteIn(o, pitched);
-    if (pitched) {
-      n.len = Math.min(n.len, steps - s);
-      // under Add, a note never overlaps one of the same pitch already in the row
-      if (mode !== "replace" && !isFree(target, n.pitch, s, n.len, null)) continue;
-      if (!isFree({ cells }, n.pitch, s, n.len, null)) continue;
-      cells[s].push(n);
-    } else {
-      if (mode !== "replace" && target.cells[s]) continue;
-      cells[s] = n;
-    }
-    count++;
   }
-  return { cells, count, leftOut };
+  return { cells, count, leftOut, taken };
 }
 
 function writeSuggestion(target, cells, mode) {

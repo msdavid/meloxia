@@ -172,7 +172,8 @@ function iconSpot(n) {
   return { dx: Math.round(clamp(0, tail.x - pos.x - I / 2, n.w - I)), dy: Math.round(clamp(0, tail.y - pos.y - I / 2, n.h - I)) };
 }
 
-/** Minimises or opens notes. The card shrinks into its icon, or grows back out of it (stickies.css has no part in it). */
+/** Minimises or opens notes. The card shrinks into its icon, or grows back out of it, animated here (stickies.css
+ *  only keeps the shrinking copy from taking clicks). */
 function setMinimised(notes, min) {
   const going = notes.filter((n) => n.min !== min);
   const cards = new Map(going.map((n) => [n, $(`.sticky[data-note="${n.id}"]`)]));

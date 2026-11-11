@@ -85,7 +85,7 @@ function instEffectsHtml(id) {
 
 function instIntroHtml(id) {
   const it = libOf(id);
-  const fam = it ? (LIB_FAMILIES.find(([key]) => key === it.fam)?.[1] ?? it.fam) : "";
+  const fam = it ? libFamName(it.fam) : "";
   const source = it
     ? `<div class="inst-src"><b>${esc(it.name)}</b><span>${fam} · ${esc(it.bank)}</span><small>${esc(it.credit)}</small></div>`
     : '<div class="inst-src"><b>Unknown sound</b></div>';

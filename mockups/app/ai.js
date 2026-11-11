@@ -144,7 +144,7 @@ function ghostLayer(cellsHtml, replace) {
 
 function drawSuggestion() {
   $$(".sg-ghost, .sg-bar, .sg-shimmer", editorEl).forEach((el) => el.remove());
-  $$(".sg-on", editorEl).forEach((el) => el.classList.remove("sg-on", "sg-busy", "sg-replace"));
+  $$(".sg-on", editorEl).forEach((el) => el.classList.remove("sg-on", "sg-replace"));
   const r = sgIndex();
   if (r < 0) return;
   const rowEl = $(`.row[data-r="${r}"]`, editorEl);
@@ -155,7 +155,6 @@ function drawSuggestion() {
 
   if (sg.phase === "working") {
     holders.forEach((el) => el.insertAdjacentHTML("beforeend", '<div class="sg-shimmer"></div>'));
-    rowEl.classList.add("sg-busy");
   } else {
     const fake = { inst: sg.row.inst, cells: sg.fit.cells };
     const replace = sg.mode === "replace";
@@ -173,9 +172,14 @@ function barHtml() {
   if (sg.phase === "working")
     return `<div class="sg-bar working"><span class="sg-what">${icon("bulb")}Working on it…</span><span class="spacer"></span>
       <button class="btn small subtle" data-sg="cancel">Cancel</button></div>`;
-  const { count, leftOut } = sg.fit;
-  const missed = leftOut ? `<span class="sg-missed">${plural(leftOut, "note")} did not fit and ${leftOut === 1 ? "was" : "were"} left out</span>` : "";
-  const none = count ? "" : '<span class="sg-missed">No suggested note found room in this row</span>';
+  const { count, leftOut, taken } = sg.fit;
+  const was = (k) => (k === 1 ? "was" : "were");
+  const lines = [
+    leftOut && `${plural(leftOut, "note")} did not fit and ${was(leftOut)} left out`,
+    taken && `${plural(taken, "note")} ${was(taken)} already there and ${was(taken)} left out`,
+  ].filter(Boolean);
+  const missed = lines.length ? `<span class="sg-missed">${lines.join(" · ")}</span>` : "";
+  const none = count || lines.length ? "" : '<span class="sg-missed">No suggested note found room in this row</span>';
   return `<div class="sg-bar"><span class="sg-what">${icon("bulb")}Suggestion · ${plural(count, "note")}</span>${missed}${none}
     <button class="sg-link" data-sg="details">Details</button><span class="spacer"></span>
     <button class="btn small primary" data-sg="keep"${count ? "" : " disabled"}>Keep<kbd>Enter</kbd></button>
@@ -203,7 +207,8 @@ editorEl.addEventListener("click", (event) => {
     return popoverFor(bulb) ? closePopover() : openSuggestBox(r, bulb, sg?.row === edSec.rows[r] ? { ask: sg.ask, mode: sg.mode } : undefined);
   }
   const act = event.target.closest(".sg-bar [data-sg]")?.dataset.sg;
-  const acts = { cancel: () => cancelSuggestion(), keep: keepSuggestion, again: tryAgain, edit: editRequest, discard: () => cancelSuggestion(), details: openSuggestDetails };
+  const drop = () => cancelSuggestion(); // Cancel (while working) and Discard (a preview) both leave the row as it was
+  const acts = { cancel: drop, discard: drop, keep: keepSuggestion, again: tryAgain, edit: editRequest, details: openSuggestDetails };
   acts[act]?.();
 });
 

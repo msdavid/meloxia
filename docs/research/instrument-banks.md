@@ -234,7 +234,7 @@ Context caveat that applies to every non-Tone player: Tone 15 builds its context
 
 ## Packs: bundled vs local-only
 
-Rule (agreed with the project lead on 2026-11-11, now that the repository is public at github.com/msdavid/synthia):
+Rule (agreed with the project lead on 2026-11-11, now that the repository is public at github.com/msdavid/meloxia):
 
 - Only banks whose **Re-host publicly?** cell is "yes" may be committed to git or ship with a publicly served build. Those are marked **bundled**.
 - Banks with no licence, an unclear licence, or a licence that forbids re-hosting go in a separate **local-only** pack. That pack is never committed to git and never included in a publicly served build. The loader must treat it as optional.

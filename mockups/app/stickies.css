@@ -10,12 +10,12 @@
 }
 
 .sticky-layer[data-view="panel"],
-.sticky-layer[data-view="dialog"] {
+.sticky-layer[data-view="dialog"],
+.sticky-layer[data-view="editor"] {
   inset: 0;
 }
 
 .sticky-layer[data-view="editor"] {
-  inset: 0;
   overflow: clip; /* notes lie over the grid: they never add to what it scrolls */
 }
 

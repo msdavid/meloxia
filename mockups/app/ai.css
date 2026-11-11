@@ -287,9 +287,12 @@
   color: var(--text);
 }
 
+/* the key grows in its row; the model list keeps to the left of the grid */
 .sg-key,
 .sg-model {
   flex: 1;
+  justify-self: start;
+  min-width: 220px;
   height: 32px;
   padding: 0 10px;
   border: 1px solid var(--line);
@@ -297,11 +300,6 @@
   background: var(--bg);
   color: var(--text);
   font: inherit;
-}
-
-.sg-model {
-  justify-self: start;
-  min-width: 220px;
 }
 
 .sg-test {
