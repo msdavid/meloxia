@@ -48,8 +48,15 @@
   line-height: 1.4;
 }
 
+.inst-acts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
 .inst-change {
   width: 100%;
+  justify-content: center;
 }
 
 .side .ctl-head .own {

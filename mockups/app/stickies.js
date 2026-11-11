@@ -4,7 +4,9 @@
 // pointing at something. The views are in stickies.places.js and the arrow in stickies.arrow.js. Notes are song
 // data (state.notes): saved with the song and covered by undo.
 //
-//   note: { id, view, place, at, w, h, text, color, min, arrow: { tip } | null }
+//   note: { id, view, place, at, w, h, text, color, min, icon?, arrow: { tip } | null }
+//     icon   where the minimised icon sits inside the note's box, { dx, dy }: at the top-left corner, or, for a
+//            note with an arrow, where the arrow leaves the note, so minimising leaves the arrow exactly as it was
 //     view   "canvas" | "editor" | "panel" | "dialog";  place: the open section, panel or dialog ("" on the canvas)
 //     at, tip   a ref { on, dx, dy }: an offset from a thing in the view (a block, a grid step, a control), or from
 //               the view's own corner when `on` is null. A place turns refs into points (stickies.places.js).
@@ -19,7 +21,13 @@ let noteSeq = 0;
 let freshNote = null; // the note just added: only it animates in, not every redraw
 const noteById = (id) => state.notes.find((n) => n.id === id);
 const notesIn = (view, place) => state.notes.filter((n) => n.view === view && n.place === place);
-const noteBox = (n, pos) => ({ x: pos.x, y: pos.y, w: n.min ? NOTE_SIZE.icon : n.w, h: n.min ? NOTE_SIZE.icon : n.h });
+const iconAt = (n) => (n.min && n.icon) || { dx: 0, dy: 0 };
+/** What a note covers at layer point pos (its top-left), and where that box sits from pos (ox, oy: the icon). */
+function noteBox(n, pos) {
+  if (!n.min) return { x: pos.x, y: pos.y, w: n.w, h: n.h, ox: 0, oy: 0 };
+  const { dx, dy } = iconAt(n), I = NOTE_SIZE.icon;
+  return { x: pos.x + dx, y: pos.y + dy, w: I, h: I, ox: dx, oy: dy };
+}
 
 /** The text of a minimised note, for its tooltip: line breaks kept, cut short when very long. */
 function noteTipText(n) {
@@ -32,7 +40,10 @@ function noteTipText(n) {
 function stickyHtml(n, pos, animate = true) {
   const style = `left:${pos.x}px; top:${pos.y}px; --sc:${NOTE_COLOURS[n.color][1]}`;
   const fresh = animate && n.id === freshNote ? " fresh" : "";
-  if (n.min) return `<button class="sticky-icon${fresh}" data-note="${n.id}" style="${style}">${icon("note")}</button>`;
+  if (n.min) {
+    const { dx, dy } = iconAt(n);
+    return `<button class="sticky-icon${fresh}" data-note="${n.id}" style="${style}; translate:${dx}px ${dy}px">${icon("note")}</button>`;
+  }
   const where = stickyWhere(n);
   return `<div class="sticky${fresh}" data-note="${n.id}" style="${style}; width:${n.w}px; height:${n.h}px">
     <div class="sticky-bar"><button class="sticky-btn sticky-colour" data-st="colour"></button>${where ? `<span class="sticky-where">${esc(where)}</span>` : ""}
@@ -51,6 +62,28 @@ function stickyLayer(view, host) {
 }
 
 const cardShape = new WeakMap(); // what each drawn card shows, apart from its place and its text
+const drawnPos = new Map(); // note id → where it was last drawn: minimising works from what is on screen
+
+/** Where a note is drawn. In a panel or dialog it is kept inside the view, in the grid inside the grid, as the open
+ *  note would be, minimised or not, so both states share one position; and kept clear of its own arrow tip there, so
+ *  a smaller view never hides it. */
+function drawnSpot(P, n) {
+  let pos = refPoint(P, n.at, n);
+  const b = P.fixed ? P.bounds() : P.keep?.();
+  if (!b) return pos;
+  const open = { ...n, min: false };
+  pos = clampNote(P, pos, noteBox(open, pos), b);
+  if (!n.arrow) return pos;
+  const tip = refPoint(P, n.arrow.tip, tipKey(n)), gap = 16;
+  const clear = (p) => Math.hypot(tip.x - clamp(p.x, tip.x, p.x + n.w), tip.y - clamp(p.y, tip.y, p.y + n.h)) >= gap;
+  if (clear(pos)) return pos;
+  // The nearest place beside the tip, on any side, that still fits the view.
+  const tries = [{ x: tip.x + gap, y: pos.y }, { x: tip.x - n.w - gap, y: pos.y }, { x: pos.x, y: tip.y + gap }, { x: pos.x, y: tip.y - n.h - gap }]
+    .map((p) => clampNote(P, p, noteBox(open, p), b))
+    .filter(clear)
+    .sort((a, b) => Math.hypot(a.x - pos.x, a.y - pos.y) - Math.hypot(b.x - pos.x, b.y - pos.y));
+  return tries[0] ?? pos;
+}
 
 function renderStickies(view) {
   const P = PLACES[view];
@@ -58,8 +91,9 @@ function renderStickies(view) {
   if (!host) return;
   const layer = stickyLayer(view, host);
   const drawn = notesIn(view, P.place()).map((n) => {
-    const pos = refPoint(P, n.at, n);
-    return { n, pos: P.fixed ? clampNote(P, pos, noteBox(n, pos)) : pos };
+    const pos = drawnSpot(P, n);
+    drawnPos.set(n.id, pos);
+    return { n, pos };
   });
   // Cards that look the same are only moved, never rebuilt: typing goes on undisturbed, and redraws are cheap
   // (the canvas redraws its notes on every frame of a drag).
@@ -128,9 +162,46 @@ function deleteNote(n) {
   toast("Note deleted", { action: "Undo", onAction: undo });
 }
 
+const minTip = (n) => (n?.arrow ? "Shrinks the note to a small icon where its arrow starts." : "Shrinks the note to a small icon at its top-left corner.");
+
+/** For a note with an arrow: the icon inside the note's box, its edge on the point the arrow leaves from. Taken
+ *  from the note and arrow as drawn at this instant, and kept until the note is next minimised. */
+function iconSpot(n) {
+  const pos = drawnPos.get(n.id), tail = drawnTail.get(n.id), I = NOTE_SIZE.icon;
+  if (!n.arrow || !pos || !tail || !$(`.sticky[data-note="${n.id}"]`)) return null;
+  return { dx: Math.round(clamp(0, tail.x - pos.x - I / 2, n.w - I)), dy: Math.round(clamp(0, tail.y - pos.y - I / 2, n.h - I)) };
+}
+
+/** Minimises or opens notes. The card shrinks into its icon, or grows back out of it (stickies.css has no part in it). */
 function setMinimised(notes, min) {
-  notes.forEach((n) => (n.min = min));
+  const going = notes.filter((n) => n.min !== min);
+  const cards = new Map(going.map((n) => [n, $(`.sticky[data-note="${n.id}"]`)]));
+  going.forEach((n) => {
+    if (min) n.icon = iconSpot(n) ?? undefined;
+    n.min = min;
+  });
   new Set(notes.map((n) => n.view)).forEach(renderStickies);
+  going.forEach((n) => {
+    const I = NOTE_SIZE.icon, { dx, dy } = n.icon ?? { dx: 0, dy: 0 };
+    const sx = I / n.w, sy = I / n.h; // scaling about this origin maps the card's box onto the icon's
+    const origin = `${dx / (1 - sx)}px ${dy / (1 - sy)}px`;
+    const small = { transform: `scale(${sx}, ${sy})`, opacity: 0.4 }, full = { transform: "none", opacity: 1 };
+    if (min) {
+      const ghost = cards.get(n), layer = $(`.sticky-icon[data-note="${n.id}"]`)?.parentElement;
+      if (!ghost || !layer) return;
+      ghost.removeAttribute("data-note");
+      ghost.inert = true;
+      ghost.classList.add("sticky-ghost");
+      ghost.style.transformOrigin = origin;
+      layer.append(ghost);
+      ghost.animate([full, { ...small, opacity: 0 }], { duration: 150, easing: "ease-in" }).finished.then(() => ghost.remove(), () => ghost.remove());
+    } else {
+      const card = $(`.sticky[data-note="${n.id}"]`);
+      if (!card) return;
+      card.style.transformOrigin = origin;
+      card.animate([small, full], { duration: 150, easing: "ease-out" });
+    }
+  });
 }
 
 function pickColour(n, anchor) {
@@ -157,13 +228,14 @@ function moveNote(n, event, wasIcon) {
     (e) => {
       if (!moved && Math.hypot(e.clientX - px, e.clientY - py) < 4) return;
       moved = true;
-      const pt = clampNote(P, { x: start.x + (e.clientX - px) / z, y: start.y + (e.clientY - py) / z }, noteBox(n, start));
+      const box = noteBox(P.fixed ? { ...n, min: false } : n, start); // as it is kept when drawn
+      const pt = clampNote(P, { x: start.x + (e.clientX - px) / z, y: start.y + (e.clientY - py) / z }, box);
       n.at = refFrom(P, n.at.on, pt); // keeps its anchor while it moves
       renderStickies(n.view);
     },
     (e) => {
       if (!moved) {
-        if (wasIcon) setMinimised([n], false);
+        if (wasIcon) (openedAt = { id: n.id, t: performance.now() }), setMinimised([n], false);
         return;
       }
       n.at = P.settle(n, refPoint(P, n.at, n), e);
@@ -202,6 +274,23 @@ document.addEventListener(
     if (el.matches(".sticky-tip") || part === "pull") return dragArrow(n, event);
     if (part === "size") return resizeNote(n, event);
     moveNote(n, event, el.matches(".sticky-icon"));
+  },
+  true,
+);
+
+// Double-clicking the top bar minimises, as its button does. Not right after an icon's click opened the note: the
+// second click of that double-click lands on the card, and the note stays open.
+let openedAt = { id: null, t: 0 };
+document.addEventListener(
+  "dblclick",
+  (event) => {
+    const bar = event.target.closest?.(".sticky-bar");
+    if (!bar) return;
+    event.stopPropagation(); // never the canvas's own double-click underneath
+    if (event.target.closest("button")) return;
+    const n = noteById(bar.closest(".sticky").dataset.note);
+    if (openedAt.id === n.id && performance.now() - openedAt.t < 600) return;
+    setMinimised([n], true);
   },
   true,
 );
@@ -269,7 +358,7 @@ function noteMenu(n, event) {
   openMenu({ x: event.clientX, y: event.clientY }, [
     n.min
       ? { label: "Show note", tip: "Opens the note again at its size.", action: () => setMinimised([n], false) }
-      : { label: "Minimise", tip: "Shrinks the note to a small icon in the same place.", action: () => setMinimised([n], true) },
+      : { label: "Minimise", tip: minTip(n), action: () => setMinimised([n], true) },
     { label: "Colour…", tip: "Picks this note's colour.", action: () => pickColour(n, { x: event.clientX, y: event.clientY }) },
     ...(n.arrow ? [{ label: "Remove arrow", tip: "Takes this note's arrow away.", action: () => ((n.arrow = null), renderStickies(n.view)) }] : []),
     "-",
@@ -284,9 +373,10 @@ document.addEventListener("DOMContentLoaded", () => {
   HISTORY_HOOKS.push(() => requestAnimationFrame(renderAllStickies)); // after the views have redrawn
   addTips([
     [".sticky", "Note", "A note for yourself. Dragging its top bar moves it. It doesn't play."],
+    [".sticky-bar", "Note", "Dragging it moves the note. Double-clicking it minimises the note."],
     [".sticky textarea", "Note text", "What you type here is saved with the song."],
     ['.sticky [data-st="colour"]', "Colour", "Picks this note's colour."],
-    ['.sticky [data-st="min"]', "Minimise", "Shrinks the note to a small icon in the same place."],
+    ['.sticky [data-st="min"]', "Minimise", (el) => minTip(noteById(el.closest(".sticky").dataset.note))],
     ['.sticky [data-st="del"]', "Delete note", "Removes this note. You can undo right after."],
     ['.sticky [data-st="size"]', "Resize", "Dragging this corner makes the note bigger or smaller."],
     ['.sticky [data-st="pull"]', "Arrow", "Dragging from here pulls out an arrow to point at something."],

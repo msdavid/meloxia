@@ -86,8 +86,8 @@ const LIBRARY = [
   { id: "handperc", name: "Hand percussion", fam: "perc", bank: "AVL Percussions", mb: 0.3, layers: 4,
     licence: "Free with credit, share alike (CC BY-SA 3.0)", credit: "AVL Percussions by Glen MacArthur (bandshed.net), CC BY-SA 3.0",
     note: "Cajon, bongos, shakers, tambourine, cowbell, claves" },
-  { id: "synth", name: "Basic synth", fam: "synth", bank: "Built into Synthia", mb: 0, here: true, builtin: true,
-    licence: "Part of Synthia", credit: "", note: "Shapes its sound from four wave pictures" },
+  { id: "synth", name: "Basic synth", fam: "synth", bank: "Built into Meloxia", mb: 0, here: true, builtin: true,
+    licence: "Part of Meloxia", credit: "", note: "Shapes its sound from four wave pictures" },
 ];
 
 // The kind the editor and instrument panel use, as in state.js INSTRUMENTS: drum (one row per sound), sampled or synth.
@@ -117,7 +117,7 @@ const IMP_DEMO_DROPS = [
   { key: "sfz", label: "An SFZ instrument", tip: "Acts as if you dropped a folder with an .sfz file and the sound files it uses.",
     file: "Dave Choir.sfz", mb: 141, found: [["Dave Choir", 352, 2]],
     lost: "Crossfades between loudness layers and the pack's own effects are not kept." },
-  { key: "nki", label: "A Kontakt library", tip: "Acts as if you dropped a Kontakt (.nki) instrument, a format Synthia cannot read.", file: "Studio Strings.nki", locked: true },
+  { key: "nki", label: "A Kontakt library", tip: "Acts as if you dropped a Kontakt (.nki) instrument, a format Meloxia cannot read.", file: "Studio Strings.nki", locked: true },
 ];
 
 // Guess a note name, a loudness level and a drum from a file name (the research's ~150-line guesser, in miniature).

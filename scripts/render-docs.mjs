@@ -186,8 +186,8 @@ a.card:hover { border-color: var(--accent); }
 .badge { align-self: flex-start; font-size: 12px; padding: 2px 8px; border-radius: 99px; background: var(--surface-3); color: var(--dim); }
 `;
 
-const HEAD_JS = `try{var l=localStorage.getItem("synthia-look");if(l)document.documentElement.dataset.look=l}catch(e){}`;
-const LOOK_JS = `(function(){var b=document.querySelectorAll(".looks button");function set(l){document.documentElement.dataset.look=l;b.forEach(function(x){x.classList.toggle("on",x.dataset.look===l)});try{localStorage.setItem("synthia-look",l)}catch(e){}}
+const HEAD_JS = `try{var l=localStorage.getItem("meloxia-look");if(l)document.documentElement.dataset.look=l}catch(e){}`;
+const LOOK_JS = `(function(){var b=document.querySelectorAll(".looks button");function set(l){document.documentElement.dataset.look=l;b.forEach(function(x){x.classList.toggle("on",x.dataset.look===l)});try{localStorage.setItem("meloxia-look",l)}catch(e){}}
 b.forEach(function(x){x.addEventListener("click",function(){set(x.dataset.look)})});set(document.documentElement.dataset.look||"graphite")})();`;
 
 function page({ title, crumb, body, toc }) {
@@ -201,7 +201,7 @@ function page({ title, crumb, body, toc }) {
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="data:,">
 <title>${esc(title)}</title><script>${HEAD_JS}</script><style>${CSS}</style></head>
 <body>
-<header class="top"><a class="home" href="index.html">Synthia <span>research</span></a>${crumb ? `<span class="crumb">/ ${esc(crumb)}</span>` : ""}<span class="spacer"></span>
+<header class="top"><a class="home" href="index.html">Meloxia <span>research</span></a>${crumb ? `<span class="crumb">/ ${esc(crumb)}</span>` : ""}<span class="spacer"></span>
 <div class="looks" title="Look"><button data-look="graphite" title="Graphite" aria-label="Graphite look"></button><button data-look="midnight" title="Midnight" aria-label="Midnight look"></button><button data-look="paper" title="Paper" aria-label="Paper look"></button></div></header>
 <div class="layout${tocHtml ? "" : " no-toc"}">${tocHtml}<main>${body}</main></div>
 <script>${LOOK_JS}</script>
@@ -231,5 +231,5 @@ for (const report of [...manifest, ...extra]) {
     report.summary ? `<p>${inline(report.summary)}</p>` : ""}${report.verdict ? `<p class="verdict">${inline(report.verdict)}</p>` : ""}</a>`);
   console.log(`rendered ${report.file} -> ${name}.html`);
 }
-writeFileSync(join(dest, "index.html"), page({ title: "Synthia research", body: `<h1>Research reports</h1><div class="cards">${cards.join("\n")}</div>` }));
+writeFileSync(join(dest, "index.html"), page({ title: "Meloxia research", body: `<h1>Research reports</h1><div class="cards">${cards.join("\n")}</div>` }));
 console.log(`wrote ${join(dest, "index.html")} (${cards.length} cards)`);

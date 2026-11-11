@@ -1,0 +1,305 @@
+/* MIDI controllers, real devices (midi.real.js, midi.setup.js): state notes, the controller picture, Monitor and Set up. */
+
+/* ---------- real devices: state notes, example LEDs ---------- */
+
+.midi-state {
+  margin: 0 0 6px;
+  padding: 8px 10px;
+  border-radius: var(--r);
+  background: var(--surface-2);
+  color: var(--dim);
+  font-size: 12px;
+}
+
+.midi-wait {
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.midi-led.example {
+  background: var(--faint);
+  box-shadow: none;
+}
+
+.midi-dev > span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* ---------- the controller picture: presses light up ---------- */
+
+.mp {
+  display: grid;
+  gap: 8px;
+  max-width: 520px;
+  margin: 0 0 14px;
+  padding: 10px;
+  border-radius: var(--r);
+  background: #111;
+}
+
+.mp-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.mp-knobs {
+  display: grid;
+  grid-template-columns: repeat(4, 18px);
+  gap: 6px;
+}
+
+.mp-knob {
+  --v: 0.5;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: conic-gradient(from 220deg, var(--accent) calc(var(--v) * 280deg), #333 0 280deg, transparent 0);
+  transition: background 0.05s;
+}
+
+.mp-pads {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+}
+
+.mp-pad {
+  height: 18px;
+  border-radius: 3px;
+  background: #2a2a2a;
+}
+
+.mp-btns {
+  display: grid;
+  gap: 4px;
+}
+
+.mp-btn {
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #2a2a2a;
+  color: #aaa;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.mp-keys {
+  display: flex;
+  height: 44px;
+}
+
+.mp-key {
+  flex: 1;
+  margin-right: 1px;
+  border-radius: 0 0 3px 3px;
+  background: #ddd;
+}
+
+.mp-key.black {
+  flex: 0.6;
+  height: 60%;
+  margin: 0 -0.3% 0 calc(-0.3% - 1px);
+  background: #222;
+  z-index: 1;
+}
+
+.mp :is(.mp-pad, .mp-key, .mp-btn).hit {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.mp-last {
+  margin: 0;
+  min-height: 16px;
+  color: #aaa;
+  font-size: 11.5px;
+}
+
+/* ---------- Monitor ---------- */
+
+.mon-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.mon-top .seg {
+  margin-right: auto;
+}
+
+.mon-clock {
+  min-height: 16px;
+  margin: 8px 0;
+  color: var(--dim);
+  font-size: 12px;
+}
+
+.mon-log {
+  height: 440px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--canvas);
+}
+
+.mon-log table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.mon-log th {
+  position: sticky;
+  top: 0;
+  padding: 5px 8px;
+  background: var(--canvas);
+  color: var(--faint);
+  font-weight: 600;
+  text-align: left;
+}
+
+.mon-log td {
+  padding: 3px 8px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.mon-log small,
+.mon-t,
+.mon-h {
+  color: var(--faint);
+}
+
+.mon-t,
+.mon-h {
+  font: 11px var(--mono);
+  white-space: nowrap;
+}
+
+.mon-p {
+  max-width: 180px;
+  overflow: hidden;
+  color: var(--dim);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mon-log tr.sent td {
+  color: var(--accent);
+}
+
+.mon-log tr.none td {
+  padding: 30px;
+  color: var(--faint);
+  text-align: center;
+}
+
+/* ---------- Set up a controller: one step, large ---------- */
+
+.ms {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px 20px;
+  align-items: start;
+}
+
+.ms .mp {
+  grid-column: 1 / -1;
+}
+
+.ms-step {
+  padding: 16px 18px;
+  border: 1px solid color-mix(in oklab, var(--accent) 45%, var(--line));
+  border-radius: var(--r-lg);
+}
+
+.ms-step small {
+  color: var(--accent);
+  font: 600 12px var(--mono);
+}
+
+.ms-step h3 {
+  margin: 6px 0 4px;
+  font-size: 18px;
+}
+
+.ms-step p {
+  margin: 0 0 10px;
+  color: var(--dim);
+}
+
+.ms-step .dim {
+  color: var(--faint);
+}
+
+.ms-step .lib-actions span {
+  color: var(--dim);
+}
+
+.ms-go {
+  height: 40px;
+  padding: 0 22px;
+  font-size: 14px;
+}
+
+.ms-seen {
+  min-height: 70px;
+  max-height: 180px;
+  margin: 0;
+  padding: 8px 10px;
+  overflow: auto;
+  border-radius: var(--r);
+  background: var(--canvas);
+  color: var(--dim);
+  font: 11.5px/1.5 var(--mono);
+  white-space: pre-wrap;
+}
+
+.ms-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.ms-nav .btn:first-child {
+  margin-right: auto;
+}
+
+.ms-list {
+  display: grid;
+  grid-template-columns: repeat(4, 26px);
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ms-list li {
+  display: grid;
+  place-items: center;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--faint);
+  font: 600 11px var(--mono);
+}
+
+.ms-list li.now {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.ms-list li.done {
+  color: var(--text);
+}
+
+[data-devkind="real"] {
+  background: color-mix(in oklab, #3fb950 22%, transparent);
+  color: var(--text);
+}

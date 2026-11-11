@@ -269,7 +269,7 @@ window.addEventListener("blur", hideTip);
 function setExplain(on) {
   document.body.classList.toggle("quiet", !on);
   try {
-    localStorage.setItem("synthia-mockup-explain", on ? "1" : "0");
+    localStorage.setItem("meloxia-mockup-explain", on ? "1" : "0");
   } catch {
     // No storage: the choice lasts until the page reloads.
   }
@@ -279,7 +279,7 @@ const explainOn = () => !document.body.classList.contains("quiet");
 
 let savedExplain = null;
 try {
-  savedExplain = localStorage.getItem("synthia-mockup-explain");
+  savedExplain = localStorage.getItem("meloxia-mockup-explain");
 } catch {
   // No storage: explanations start on.
 }

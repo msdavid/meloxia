@@ -5,7 +5,7 @@ const editorEl = $("#editor");
 const stageEl = $(".stage");
 
 // Row header width: full names ("String ensemble") from 1300px; below that they end in an ellipsis (the tooltip has them).
-const headerW = () => (innerWidth >= 1300 ? 362 : 284);
+const headerW = () => (innerWidth >= 1300 ? 392 : 284); // 1300 and up: room for the Suggest notes button (ai.css)
 const BEAT_GAP = 6;
 const BAR_GAP = 14;
 const BAR_CHOICES = [1, 2, 4, 8];
@@ -48,6 +48,7 @@ function openEditor(id) {
 
 function closeEditor() {
   if (!edSec) return;
+  cancelSuggestion("the section closed");
   stopPlay();
   closePicker();
   closeInspector();
@@ -85,6 +86,7 @@ function rowHtml(r, index) {
       <span class="glyph">${icon(glyphFor(instrument))}</span>
       <button class="rname" data-act="inst">${instrument.name}<small>${instLine(instrument)}</small></button>
       ${expand}
+      <button class="mini sg-btn" data-act="suggest">${icon("bulb")}</button>
       <button class="mini bars${r.strip ? " on" : ""}" data-act="strip">${icon("bars")}</button>
       <button class="mini m${r.mute ? " on" : ""}" data-act="mute">M</button>
       <button class="mini s${r.solo ? " on" : ""}" data-act="solo">S</button>
@@ -267,6 +269,7 @@ window.addEventListener("pointerup", () => (paint = null));
 /* ---------- header, rows and the instrument picker ---------- */
 
 function resizeSection(section, bars) {
+  if (section === edSec && bars !== section.bars) cancelSuggestion("the section's length changed");
   const steps = bars * STEPS_PER_BAR;
   section.rows.forEach((r) => {
     // Growing a section repeats what is already there, so the loop keeps going.
@@ -334,7 +337,7 @@ editorEl.addEventListener("click", (event) => {
   const rowEl = button.closest(".row");
   const r = rowEl ? edSec.rows[Number(rowEl.dataset.r)] : null;
 
-  if (act === "inst" || act === "arm") return; // instrument.js and record.js handle these
+  if (act === "inst" || act === "arm" || act === "suggest") return; // instrument.js, record.js and ai.js handle these
   if (act === "close") return closeEditor();
   if (act === "play") return togglePlay();
   if (act === "settings") return togglePanel("section", edSec.id);
@@ -383,11 +386,12 @@ function editorHit(step) {
   });
   edSec.rows.forEach((r, index) => {
     if (isSilenced(r)) return;
+    if (suggestHit(index, step)) return; // a suggestion previews in this row instead of its own notes (ai.js)
     const playing = notesAt(r, step).filter((n) => Math.random() * 100 < n.chance);
     if (!playing.length) return;
-    flash($(`.row[data-r="${index}"] .cell[data-s="${step}"] .note`, editorEl), playing[0]);
+    flash($(`.row[data-r="${index}"] > .cells .cell[data-s="${step}"] .note`, editorEl), playing[0]);
     retrigger($(`.row[data-r="${index}"] .led`, editorEl));
-    playing.forEach((n) => flash($(`.lanes[data-r="${index}"] .lane[data-p="${n.pitch}"] .cell[data-s="${step}"] .note`, editorEl), n));
+    playing.forEach((n) => flash($(`.lanes[data-r="${index}"] .lane[data-p="${n.pitch}"] > .cells .cell[data-s="${step}"] .note`, editorEl), n));
   });
 }
 

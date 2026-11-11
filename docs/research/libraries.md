@@ -1,4 +1,4 @@
-# Libraries and engines for Synthia
+# Libraries and engines for Meloxia
 
 Research of 11 Nov 2026 (worker3, for the project lead). Sources:
 
@@ -41,8 +41,8 @@ Scope:
 | 16 | **Plugins run with full trust in the main realm** (Obsidian model); vetting is the user's responsibility. Audio plugins allowed from the start. Supported surface: versioned registries, events, commands, synchronous before/after hooks (actions and play-time events) and UI in our DOM; internals reachable but unsupported. Conventions: commands for edits, stable ids, namespaced schema, offline-re-creatable rack slots. Safeguards: one install warning, a per-plugin off switch, start with all plugins disabled. No sandbox host, CSP or RPC proxy. | The owner, via the project lead |
 | 17 | Plugins can alter the interface: add, reorder, hide or replace in named slots; override whole views; add menus and menu items (every right-click menu) and buttons; restyle through looks. Our own interface is built through the same slot, view and menu registries, and every plugin view has an error boundary with the built-in one as its fallback. | The owner, via the project lead |
 | 18 | Canvas block types come from one registry (appearance, palette, ports, flow behaviour, length, editor, settings, saved form, export behaviour). Start, Section, Split and Join are defined through it. | The owner, via the project lead |
-| 19 | A saved `.synthia` file is always complete: the song, every used instrument whole, with samples deduplicated by hash, effect settings, and the plugins it depends on. No "song only" variant. Size shown before saving; streaming write and read. On open, missing instruments join the library; embedded plugins trigger the install warning, with the option to open without them (shown inactive). Autosave references the local store. | The owner, via the project lead |
-| 20 | Plugin manifests declare Android-style permissions (§11 list), and a `.synthia` file carries a root `manifest.json` of its instruments, plugins and their permissions. Opening a file shows one consent screen: accept all, accept per plugin, or open without plugins. Declarations are **shown, never enforced** (option a): headed "What this plugin's author says it does", with the fixed line "Synthia does not check or enforce this. Plugins can access everything in the app."; "Declares nothing" when empty. The sandbox hybrid was considered and rejected. | The owner, via the project lead |
+| 19 | A saved `.meloxia` file is always complete: the song, every used instrument whole, with samples deduplicated by hash, effect settings, and the plugins it depends on. No "song only" variant. Size shown before saving; streaming write and read. On open, missing instruments join the library; embedded plugins trigger the install warning, with the option to open without them (shown inactive). Autosave references the local store. | The owner, via the project lead |
+| 20 | Plugin manifests declare Android-style permissions (§11 list), and a `.meloxia` file carries a root `manifest.json` of its instruments, plugins and their permissions. Opening a file shows one consent screen: accept all, accept per plugin, or open without plugins. Declarations are **shown, never enforced** (option a): headed "What this plugin's author says it does", with the fixed line "Meloxia does not check or enforce this. Plugins can access everything in the app."; "Declares nothing" when empty. The sandbox hybrid was considered and rejected. | The owner, via the project lead |
 
 ## 1. Audio engine
 
@@ -214,7 +214,7 @@ For a public app with no server, everything lives on the user's machine:
    - `showSaveFilePicker` / `showOpenFilePicker` (Chrome 86; Firefox none).
    - Keep the `FileSystemFileHandle` in IndexedDB so "Save" rewrites the same file. Whether a permission re-prompt appears each session is UNVERIFIED.
    - Fallback: `<a download>` and `<input type=file>`. It is cheap, even with Chrome as the only target.
-3. **Single-file project, `.synthia` = zip, always complete and portable** (decision 19).
+3. **Single-file project, `.meloxia` = zip, always complete and portable** (decision 19).
    - Contents:
      - `project.json`: a versioned schema with a `format` number and migrations;
      - `instruments/<id>/`: every instrument the song uses, **whole** (all zones and layers, not just the notes played, so the song stays editable), with its map;
@@ -319,7 +319,7 @@ The owner's decision, 11 Nov: plugins get access to the entire application, and 
   - stable ids, and the namespaced, versioned project schema;
   - rack slots re-creatable in an offline context, because export renders in a fresh `OfflineAudioContext` and must load each plugin's worklet module and state again.
 - **The one safeguard:**
-  - a single install warning: "This plugin can read and change everything in Synthia, including your songs and sounds. Only install plugins you trust.";
+  - a single install warning: "This plugin can read and change everything in Meloxia, including your songs and sounds. Only install plugins you trust.";
   - a per-plugin off switch;
   - starting the app with all plugins disabled (a safe-mode launch, e.g. a URL flag or a key held at start) when one breaks it.
 
@@ -393,9 +393,9 @@ interface BlockRun {
 
 - **Manifest:**
   - `id` and `version` (semver);
-  - `engines.synthia`: a semver range, required and never `*` (VS Code); refuse to load outside it (Obsidian's `minAppVersion` is the weaker form);
+  - `engines.meloxia`: a semver range, required and never `*` (VS Code); refuse to load outside it (Obsidian's `minAppVersion` is the weaker form);
   - `contributes`: declarative where possible, so the app can list what a plugin adds before running it.
-- **SDK:** `@synthia/plugin-sdk`, typed from the same TypeScript interfaces as the registries, hooks and commands, under a versioned namespace (`synthia.v1`). Changes within a major version are additive only; removals wait for a full major version of overlap.
+- **SDK:** `@meloxia/plugin-sdk`, typed from the same TypeScript interfaces as the registries, hooks and commands, under a versioned namespace (`meloxia.v1`). Changes within a major version are additive only; removals wait for a full major version of overlap.
 - **Hooks are the expensive promise.** A before-hook that sees an action's shape freezes that shape. Keep hook payloads small, documented types rather than internal objects.
 - **Plugin data in projects:**
   - It is namespaced by plugin id and carries its own schema version and migrations (tldraw pattern).
@@ -431,12 +431,12 @@ Every plugin manifest declares what it uses, under `permissions`:
 | `network: [hosts]` | reach the internet, listing hosts |
 | `full-access` | everything, in the main realm |
 
-A `.synthia` file carries a root `manifest.json` listing everything it contains and needs: instruments (name, sample count, size), plugins (id, version, SHA-256, declared permissions, and which blocks and effects use them), and the total size. **Opening a file shows one consent screen** with that list: accept all, accept per plugin, or open without plugins (their blocks and effects stay inactive).
+A `.meloxia` file carries a root `manifest.json` listing everything it contains and needs: instruments (name, sample count, size), plugins (id, version, SHA-256, declared permissions, and which blocks and effects use them), and the total size. **Opening a file shows one consent screen** with that list: accept all, accept per plugin, or open without plugins (their blocks and effects stay inactive).
 
 **Decided (the owner, option a): declarations are shown, never enforced.** Every plugin runs with full trust in the main realm (decision 16). The consent screen is worded so it does not over-promise:
 
 - Each plugin's list is headed **"What this plugin's author says it does"**.
-- It carries the fixed line **"Synthia does not check or enforce this. Plugins can access everything in the app."**
+- It carries the fixed line **"Meloxia does not check or enforce this. Plugins can access everything in the app."**
 - A plugin with no declarations shows **"Declares nothing"**.
 - The choices are accept all, accept per plugin, or open without plugins.
 
@@ -464,7 +464,7 @@ A `.synthia` file carries a root `manifest.json` listing everything it contains 
 | Node canvas | `@xyflow/react` 12 |
 | Step grid | DOM grid + Canvas overlay for the playhead and flashes |
 | State / undo | zustand 5 + immer patches |
-| Persistence | `idb` + OPFS (hash-named samples, packs) + `storage.persist()`; always-complete `.synthia` zip (instruments, samples, plugins) streamed with `@zip.js/zip.js` through File System Access |
+| Persistence | `idb` + OPFS (hash-named samples, packs) + `storage.persist()`; always-complete `.meloxia` zip (instruments, samples, plugins) streamed with `@zip.js/zip.js` through File System Access |
 | UI | `@base-ui/react`, hand-rolled knobs, `react-resizable-panels`, pragmatic-drag-and-drop |
 | Music / MIDI | `tonal`, own Euclid, native Web MIDI with `getOutputTimestamp` mapping, `@tonejs/midi` |
 | Export | Chunked `suspend()` rendering → own WAV writer; MP3 via `@mediabunny/mp3-encoder`; optional Opus/AAC via Mediabunny |
@@ -477,7 +477,7 @@ A `.synthia` file carries a root `manifest.json` listing everything it contains 
 2. **Graph decisions about 100 ms ahead.** Joins, "on cue" transitions and edits to queued sections need quantised waits and a cancel-and-reschedule path. Main-thread stalls longer than the lookahead cause dropouts.
 3. **Offline export at scale.** Tone's offline path schedules everything up front, measured 12× slower. Chunked `suspend()` rendering through Tone's context needs a spike before building export.
 4. **Join semantics and tails.** Unequal branch lengths need a rule (decision), and section racks must outlive the join until their tails decay.
-5. **Local-only data.** Eviction is possible without `persist()`, and Chrome's grant is heuristic. A saved `.synthia` file is the only real backup, and the UI must make that plain.
+5. **Local-only data.** Eviction is possible without `persist()`, and Chrome's grant is heuristic. A saved `.meloxia` file is the only real backup, and the UI must make that plain.
 6. **Input latency calibration.** Computer-keyboard latency is higher and less stable than MIDI (UNVERIFIED magnitude). Without calibration, recorded nudges would be systematically late.
 7. **Tone pre-release pin.** `next` can change between pins; upgrades need the browser render tests.
 8. **Plugin protection given up (decision 16).** There is no isolation between a plugin and the user's songs, samples, files and network, so one malicious or careless plugin can destroy or leak all local work. The only defences are the install warning, the off switch and safe mode.

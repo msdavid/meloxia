@@ -126,7 +126,7 @@ $$("[data-bpm]").forEach((button) =>
 function setLook(look) {
   document.documentElement.dataset.look = look;
   try {
-    localStorage.setItem("synthia-mockup-look", look);
+    localStorage.setItem("meloxia-mockup-look", look);
   } catch {
     // Private windows may refuse storage; the look just won't be remembered.
   }
@@ -178,7 +178,7 @@ window.addEventListener("keydown", (event) => {
 $$("[data-icon]").forEach((el) => (el.innerHTML = icon(el.dataset.icon)));
 let savedLook = null;
 try {
-  savedLook = localStorage.getItem("synthia-mockup-look");
+  savedLook = localStorage.getItem("meloxia-mockup-look");
 } catch {
   // No storage: start with the default look.
 }

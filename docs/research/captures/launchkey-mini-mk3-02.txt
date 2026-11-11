@@ -1,0 +1,23 @@
+Meloxia MIDI monitor report (second capture, same session as 01, continued)
+Made 11/11/2026, 9:26:58 PM · Chrome 157 · device messages (SysEx) allowed
+Note numbers: 60 is middle C, written C4 here (Novation's guides call it C3).
+
+Devices: as in capture 01 (Launchkey Mini MK3 MIDI Port and DAW Port, in and out; Midi Through Port-0).
+Identity replies: as in capture 01 (F0 7E 00 06 02 00 20 29 02 01 00 00 00 02 05 09 F7 on both ports).
+
+Guided steps 1-7: not done (free play; everything below arrived outside the steps, cumulative with capture 01).
+
+Outside the steps
+  [Launchkey Mini MK3 MIDI Port] Key down · channel 1 · notes 51–72, 8 distinct, in order: 57 70 71 51 55 72 68 53 · how hard 29–127 · 12 messages
+  [Launchkey Mini MK3 MIDI Port] Key up · channel 1 · notes 51–72, 8 distinct, in order: 57 70 71 51 55 72 68 53 · release 0 · 12 messages
+  [Launchkey Mini MK3 MIDI Port] Key down · channel 10 · notes 36–62, 17 distinct, in order: 40 41 42 38 49 50 51 43 48 36 37 39 44 45 46 47 62 · how hard 10–127 · 27 messages
+  [Launchkey Mini MK3 MIDI Port] Key up · channel 10 · notes 36–62, 17 distinct, in order: 40 41 42 38 49 50 51 43 48 36 37 39 44 45 46 47 62 · release 0 · 27 messages
+  [Launchkey Mini MK3 MIDI Port] Control change · channel 1 · numbers 1–117, 17 distinct, in order: 1 115 117 28 27 26 25 24 23 22 21 106 107 104 105 103 102 · values 0–127 · 1184 messages
+  [Launchkey Mini MK3 MIDI Port] Pitch bend · channel 1 · bend -8192–8191 · 953 messages
+  [Midi Through Port-0] Device message · 1 message
+    F0 7E 7F 06 01 F7
+  [Launchkey Mini MK3 MIDI Port] Identity reply · 1 message
+  [Launchkey Mini MK3 DAW Port] Identity reply · 1 message
+  [Launchkey Mini MK3 DAW Port] Control change · channel 16 · numbers 3, 1 distinct, in order: 3 · values 0 · 1 message
+  [Launchkey Mini MK3 MIDI Port] Program change · channel 1 · numbers 0–1, 2 distinct, in order: 1 0 · 2 messages
+  Timing clock · 9701 ticks

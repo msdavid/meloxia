@@ -89,7 +89,7 @@ function instIntroHtml(id) {
   const source = it
     ? `<div class="inst-src"><b>${esc(it.name)}</b><span>${fam} · ${esc(it.bank)}</span><small>${esc(it.credit)}</small></div>`
     : '<div class="inst-src"><b>Unknown sound</b></div>';
-  return `${source}<button class="btn inst-change" data-inst="change">${icon("open")}Change instrument</button>`;
+  return `${source}<div class="inst-acts"><button class="btn inst-change" data-inst="change">${icon("open")}Change instrument</button><button class="btn inst-change" data-inst="suggest">${icon("bulb")}Suggest notes…</button></div>`;
 }
 
 /* ---------- editing ---------- */
@@ -98,6 +98,7 @@ function soundClick(event, id) {
   const s = soundOf(id);
   const t = event.target;
   if (t.closest('[data-inst="change"]')) return changeInstrument(id), false;
+  if (t.closest('[data-inst="suggest"]')) return suggestFromPanel(id), false;
   const set = t.closest("[data-set][data-v]");
   if (set && !set.disabled) {
     const raw = set.dataset.v;

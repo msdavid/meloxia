@@ -14,6 +14,11 @@
   inset: 0;
 }
 
+.sticky-layer[data-view="editor"] {
+  inset: 0;
+  overflow: clip; /* notes lie over the grid: they never add to what it scrolls */
+}
+
 .dialog {
   position: relative; /* the note layer of a dialog sits on it */
 }
@@ -154,6 +159,11 @@
   box-shadow: var(--shadow);
   color: var(--text);
   cursor: pointer;
+}
+
+/* a card shrinking into its icon (stickies.js animates it) */
+.sticky-ghost {
+  pointer-events: none;
 }
 
 .sticky-icon svg.i {

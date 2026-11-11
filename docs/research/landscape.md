@@ -1,5 +1,7 @@
 # Name check and similar apps
 
+The project was renamed Meloxia on 11 Nov 2026. The name-check sections below analyse the old name, Synthia; the check on the new name is section D at the end.
+
 Research of 11 Nov 2026 (worker3 with two research agents, for the project lead). Facts come from pages and searches made that day, and what could not be confirmed is marked UNVERIFIED in each part.
 
 ## A. Is the name "Synthia" taken?
@@ -171,3 +173,40 @@ Checked 2026-11-11; quick checks only, not legal advice.
 - Owner of songloom.app, weavetone.com and tunepath.com: not stated on the pages.
 - Songloom listing at https://mwm.ai/apps/songloom-ai-song-maker/6759814466 came from search results only, not fetched.
 - Tinkerbeat link in the table points to a search, not a page; no source page exists.
+
+## D. Is the name "Meloxia" taken?
+
+Checked 2026-11-11 (worker1 with a research agent); quick checks only, not legal advice. Most rows come from search snippets, not fetched pages.
+
+### Music and other products
+No Meloxia app, plugin, synth, DAW, label or artist found. Nearest names: MELØ, Melonyx, Melodia.
+
+### Pharma and vet
+No Meloxia or Meloxa brand found. The name reads as derived from meloxicam (an anti-inflammatory drug), so searches come back pharma-heavy.
+| Name | Distance | What | Source |
+|---|---|---|---|
+| Meloxi | 1 letter | Meloxicam tablet, India | https://pharmeasy.in/online-medicine-order/meloxi-7-5mg-tab-73468 |
+| Meloxidyl | 2 letters | Veterinary meloxicam, US reg. 4336621 | https://trademark.justia.com/776/85/meloxidyl-77685320.html |
+| Meloxidura, Meloxistad, Meloaxis | Further | Meloxicam brands | search snippets |
+
+### Trademarks
+USPTO, EUIPO and WIPO were not reached. One aggregator search found no exact hit; the nearest is MELIOZIA, pending, Class 21 (household goods), unrelated (https://markinton.com/trademark/meliozia-99766397).
+
+### Domains, GitHub and npm
+| Item | Result |
+|---|---|
+| meloxia.com | Registered: Cloudflare IPs, 403 challenge page; content and owner unknown |
+| meloxia.app, meloxia.io | No resolve (not proof they are free) |
+| npm `meloxia` | Free: 404 at https://registry.npmjs.org/meloxia |
+| GitHub user `meloxia` | Taken: created 2020-05-19, 0 public repos (https://github.com/meloxia) |
+| GitHub repo Praveenmkl/MELOXIA | Exists, purpose unknown |
+
+### Verdict
+Usable with caveats. Nothing in music shares the name, and npm is free. The catches: the .com is held by someone, the GitHub user name is taken, and the name sits close to meloxicam brands, so search results will lean towards medicine for a while.
+
+### UNVERIFIED
+- The USPTO, EUIPO and WIPO registers.
+- What meloxia.com serves and who owns it; whether meloxia.app and meloxia.io are registered.
+- App Store and Google Play listings.
+- The FDA, EMA and Indian drug and veterinary registers (snippets only).
+- The purpose of Praveenmkl/MELOXIA.

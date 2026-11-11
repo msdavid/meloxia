@@ -57,10 +57,10 @@ function runProgress(host, steps, ms, done) {
 // "What this plugin's author says it does" (libraries.md decision 20: shown, never enforced).
 function declHtml(id) {
   const p = PLUGIN_TYPES[id];
-  const items = p.perms.map((k) => `<li>${PERMISSIONS[k]}${k === "network" && p.hosts ? `: <code>${p.hosts.join(", ")}</code>` : ""}</li>`);
+  const items = p.perms.map((k) => `<li data-perm="${k}">${PERMISSIONS[k]}${k === "network" && p.hosts ? `: <code>${p.hosts.join(", ")}</code>` : ""}</li>`);
   return `<div class="decl"><h5>What this plugin's author says it does</h5>${
     items.length ? `<ul>${items.join("")}</ul>` : `<p class="decl-none">Declares nothing</p>`
-  }<p class="decl-fixed">Synthia does not check or enforce this. Plugins can access everything in the app.</p></div>`;
+  }<p class="decl-fixed">Meloxia does not check or enforce this. Plugins can access everything in the app.</p></div>`;
 }
 
 const pluginHead = (id, extra = "") => {
@@ -85,7 +85,7 @@ function saveContents() {
 function openSave() {
   const { inst, synths, plugins, total } = saveContents();
   const body = `
-    <label class="sys-field"><span>File name</span><input id="save-name" value="${CURRENT_SONG.name}.synthia" spellcheck="false" data-focus /></label>
+    <label class="sys-field"><span>File name</span><input id="save-name" value="${CURRENT_SONG.name}.meloxia" spellcheck="false" data-focus /></label>
     <p class="sys-lead">The file is complete: anyone who opens it hears exactly this song, with every sound it needs.</p>
     <h4 class="sys-h">The file will contain</h4>
     <ul class="sys-list">
@@ -102,7 +102,7 @@ function openSave() {
 }
 
 function saveGo() {
-  const name = document.querySelector("#save-name").value.trim() || `${CURRENT_SONG.name}.synthia`;
+  const name = document.querySelector("#save-name").value.trim() || `${CURRENT_SONG.name}.meloxia`;
   const { inst, plugins, total } = saveContents();
   const steps = ["Writing the song", ...inst.map((i) => `Writing ${i.name}`), ...plugins.map((p) => `Writing ${p.name}`), "Finishing"];
   sysDialog({ title: "Saving…", body: `<p class="sys-lead">${esc(name)}</p><div id="save-progress"></div><p class="sys-note">You can keep working while it saves.</p>` });
@@ -123,7 +123,7 @@ function openOpen() {
     title: "Open song",
     body: `<p class="sys-lead">Pick a song file. Nothing runs until you have seen what it contains.</p>
       <ul class="sys-list files">${files.join("")}</ul>
-      <div class="drop" data-sys="pick">${icon("open")}<span><b>Choose a file from your computer…</b><small>or drop a .synthia file here</small></span></div>`,
+      <div class="drop" data-sys="pick">${icon("open")}<span><b>Choose a file from your computer…</b><small>or drop a .meloxia file here</small></span></div>`,
     buttons: [CANCEL],
   });
 }
@@ -182,14 +182,14 @@ function openFile(i) {
   const f = DEMO_FILES[i];
   const added = f.instruments.filter((x) => !x.have).length;
   showConsent({
-    title: `Open “${f.file.replace(".synthia", "")}”`,
+    title: `Open “${f.file.replace(".meloxia", "")}”`,
     lead: `${fmtMb(f.mb)} · ${f.instruments.length} instruments · ${f.plugins.length} plugin${f.plugins.length === 1 ? "" : "s"}`,
     instruments: f.instruments,
     plugins: f.plugins,
     onAccept: (ids, left) => {
       const parts = [added ? `${added} instrument${added === 1 ? "" : "s"} added to your library` : "nothing new for your library"];
       if (left.length) parts.push(`${left.map((p) => p.uses).join(", ")} inactive (plugin${left.length === 1 ? "" : "s"} not used)`);
-      toast(`Opened “${f.file.replace(".synthia", "")}” · ${parts.join(" · ")}`);
+      toast(`Opened “${f.file.replace(".meloxia", "")}” · ${parts.join(" · ")}`);
     },
   });
 }
@@ -305,9 +305,10 @@ document.addEventListener("DOMContentLoaded", () => {
   sysTips([
     ["#save-name", { name: "File name", text: "What the saved file is called on your computer." }],
     ["[data-file]", (el) => ({ name: DEMO_FILES[el.dataset.file].file, text: "Opens this song. You see what it contains first." })],
-    ["[data-sys='pick']", { name: "Choose a file", text: "Picks a .synthia file from your computer. You can also drop one here." }],
+    ["[data-sys='pick']", { name: "Choose a file", text: "Picks a .meloxia file from your computer. You can also drop one here." }],
     ["[data-sys='consent-one']", { name: "Use this plugin", text: "Lets this plugin run with the song." }],
-    [".decl", { name: "Author's description", text: "What the plugin's author says it does. Synthia cannot check this." }],
+    [".decl", { name: "Author's description", text: "What the plugin's author says it does. Meloxia cannot check this." }],
+    [".decl [data-perm='suggest-key']", { name: "Suggestions key", text: "This plugin can use the key you set for note suggestions, which is charged to your account with that provider." }],
     ["[data-set='fmt']", (el) => ({ name: el.textContent, text: el.dataset.v === "wav" ? "Uncompressed audio: full quality, about 10 MB a minute." : "Compressed audio: small files that play everywhere." })],
     ["[data-set='wav']", (el) => ({ name: el.textContent, text: el.dataset.v === "16" ? "16-bit, the quality of a CD." : "24-bit, extra headroom for editing elsewhere." })],
     ["[data-set='mp3']", (el) => ({ name: el.firstChild.textContent, text: el.dataset.v === "192" ? "192 kbps: a smaller file that still sounds good." : "320 kbps: the best MP3 sound, in a larger file." })],

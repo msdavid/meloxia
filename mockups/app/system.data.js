@@ -32,7 +32,7 @@ const STARTER = [
   { id: "perc", name: "Percussion", family: "Percussion", bank: "AVL Percussions", mb: 0.3, credit: "AVL Percussions by Glen MacArthur (bandshed.net)", licence: "CC BY-SA 3.0" },
 ];
 
-// Software Synthia is built on, credited alongside the sounds (docs/research/libraries.md).
+// Software Meloxia is built on, credited alongside the sounds (docs/research/libraries.md).
 const SOFTWARE_CREDITS = [
   { name: "Tone.js", what: "the sound engine", licence: "MIT" },
   { name: "LAME", what: "MP3 encoding, through Mediabunny", licence: "LGPL", link: "https://lame.sourceforge.io/" },
@@ -52,11 +52,12 @@ const PERMISSIONS = {
   microphone: "Uses your microphone",
   files: "Reads and writes files you choose",
   network: "Connects to the internet",
+  "suggest-key": "Can read your suggestions key",
 };
 
 const PLUGIN_TYPES = {
   "tempo-tools": { name: "Speed tools", author: "Ada Okafor", version: "1.2.0", kb: 14, adds: "A “Speed change” block for the song canvas", perms: ["blocks", "song"] },
-  euclid: { name: "Euclid rhythm generator", author: "Lumen Audio", version: "0.9.3", kb: 38, adds: "A note helper that spreads hits evenly across a row", perms: ["ui.extend", "song"] },
+  euclid: { name: "Euclid rhythm generator", author: "Lumen Audio", version: "0.9.3", kb: 38, adds: "A note helper that spreads hits evenly across a row", perms: ["ui.extend", "song", "suggest-key"] },
   neon: { name: "Neon look", author: "pixelmoth", version: "2.0.1", kb: 22, adds: "A new look for the whole app", perms: ["ui.replace"] },
   "tape-warmth": { name: "Tape warmth", author: "unknown", version: "0.1.0", kb: 61, adds: "An effect that makes sounds softer and rounder", perms: [] },
   "cloud-share": { name: "Song sharer", author: "Hopscotch Labs", version: "1.0.0", kb: 45, adds: "Uploads a song and gives you a link", perms: ["song", "files", "network"], hosts: ["share.hopscotch.example"] },
@@ -77,7 +78,7 @@ const CURRENT_SONG = {
 // Two files offered by Open. Instruments already in the library match by content hash.
 const DEMO_FILES = [
   {
-    file: "Rainy Sunday.synthia",
+    file: "Rainy Sunday.meloxia",
     mb: 58,
     saved: "2 days ago",
     instruments: [
@@ -88,7 +89,7 @@ const DEMO_FILES = [
     plugins: [{ id: "tempo-tools", uses: "2 blocks" }],
   },
   {
-    file: "Club night.synthia",
+    file: "Club night.meloxia",
     mb: 31,
     saved: "last month",
     instruments: [

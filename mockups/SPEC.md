@@ -40,10 +40,10 @@ One clickable, silent mockup covering every feature decided so far. `CLAUDE.md` 
 ## D. System screens (top-bar menu)
 
 - **Save.** Shows what the file will contain (instruments with sizes, plugins) and the total, then progress. Files are always complete.
-- **Open.** Two demo files. Then the consent screen: instruments that will be added to the library; plugins, each under "What this plugin's author says it does", with the fixed line "Synthia does not check or enforce this. Plugins can access everything in the app."; "Declares nothing" where empty. Accept all · choose per plugin · Open without plugins.
+- **Open.** Two demo files. Then the consent screen: instruments that will be added to the library; plugins, each under "What this plugin's author says it does", with the fixed line "Meloxia does not check or enforce this. Plugins can access everything in the app."; "Declares nothing" where empty. Accept all · choose per plugin · Open without plugins.
 - **Export.** WAV or MP3 (with quality); whole song or this section; a length field when the song is endless; "Same as last play / New roll" for chance; progress; done toast.
 - **Plugins.** Installed list with on/off, declarations and remove; "Add plugin" leading to the consent screen; a note on starting with all plugins off. Demo plugins: a rhythm generator, a look, the Tempo change block.
-- **MIDI controllers.** Devices (two demo devices: one "Ready-made profile", one "Generic"); MIDI learn (click a control, then a "pretend the knob moved" button); the list of mappings; a tap-along delay calibration.
+- **MIDI controllers.** Real where it can be: with a real controller connected and allowed, the dialog uses it; otherwise it shows example devices. Tabs: Devices · Monitor (a live, decoded log of what a device sends) · Set up a controller (a guided capture, one step at a time, ending in a mapping the user can keep and export) · Mappings (with MIDI learn: click a control, then move a real knob or the "pretend the knob moved" button) · Supported controllers. A tap-along delay calibration. The monitor and set-up are part of the app, never a separate page.
 - **Credits.** Bank names and credit lines for the starter set.
 - **Preferences.** Look, Show explanations, autosave status, storage used.
 
@@ -54,6 +54,18 @@ One clickable, silent mockup covering every feature decided so far. `CLAUDE.md` 
 - Minimise collapses a note to an icon in place; hovering the icon shows the full text; clicking reopens it at the same size. Each view offers "Minimise all notes / Show all notes".
 - A note can carry one arrow: pulled out from a handle, its tip dragged anywhere to re-aim or resize it, attaching to whatever it is dropped on and following it; dropped back on the note it is removed. The arrow stays when the note is minimised.
 - A section block shows a badge with the count of notes inside it. Notes are song data: saved with the song and covered by undo.
+
+## F. Suggest notes (pretend: no real request is made)
+
+The interface never says "AI". The feature is "Suggest notes", its result a "suggestion", its icon a light bulb (not a sparkle or a wand). The settings stay explicit about what happens: they name the provider and the model and say what is sent.
+
+- **Where.** A light-bulb button in every instrument row header opens a small box anchored to that row; the instrument panel also offers "Suggest notes…" beside "Change instrument", which is the way in when the button is folded away in a narrow window. A suggestion only ever writes notes for that row; the row's instrument is the user's choice and is sent as context, never changed by the reply.
+- **The box.** "Suggest notes · Bass", a text field ("What should the bass play?"), example chips suited to the row (drum or tune), "Add to what's there / Replace" when the row already has notes, a line saying where the section is sent with a link to the settings, Send (Enter), Esc closes. With no key set, the box offers "Set up suggestions" instead.
+- **Thinking.** The row shimmers with "Working on it…" and Cancel, for one to two seconds.
+- **Preview, then keep.** The suggestion appears in the row as ghost notes (existing notes dimmed under Replace) with a bar: "Suggestion · 9 notes", Keep (Enter), Try again, Edit request, Discard (Esc). The loop flashes the ghost notes as it passes. Keep turns them into real notes as one undo step; Discard leaves no trace. A suggestion that did not fit says so ("2 notes did not fit and were left out").
+- **Details.** A link in the bar opens what was sent (the request, the section's instruments, notes and settings) and what came back (the notes with their settings), both as readable JSON.
+- **Pretend replies.** Rule-made and plausible for the row and the request (in the song's key, inside the section's length, with varied loudness and lengths), three variants per kind so Try again differs.
+- **Settings ("Suggestions" in the menu).** Provider (Anthropic · OpenAI · OpenRouter), the key (stored only in this browser), a model choice, Test, Remove key, and three plain statements: suggestions are written by a model run by the provider you choose, and the section's notes and settings are sent to it; each request is charged to your account there; installed plugins can read the key. Plugin declarations gain "Can read your suggestions key".
 
 ## Report format
 

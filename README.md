@@ -1,4 +1,4 @@
-# Synthia
+# Meloxia
 
 A music production app that runs entirely in the browser: a synthesizer and a
 sequencer in one place, with algorithmic helpers for the composing.

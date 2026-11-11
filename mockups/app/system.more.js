@@ -13,10 +13,10 @@ function pluginsBody() {
       <div class="plug-actions">${btn(e.open ? "Hide description" : "What it says it does", `data-sys="plug-decl" data-id="${e.id}"`, "small")}${btn(`${icon("trash")}Remove`, `data-sys="plug-remove" data-id="${e.id}"`, "small danger")}</div>
       ${e.open ? declHtml(e.id) : ""}</li>`,
   );
-  return `<p class="sys-lead">Plugins add things to Synthia: note helpers, looks, new canvas blocks, effects. They can reach everything in the app, so only install plugins you trust.</p>
+  return `<p class="sys-lead">Plugins add things to Meloxia: note helpers, looks, new canvas blocks, effects. They can reach everything in the app, so only install plugins you trust.</p>
     <ul class="plug-list">${rows.join("") || `<li class="sys-empty">No plugins installed.</li>`}</ul>
     <div class="drop" data-sys="plug-add">${icon("plus")}<span><b>Add plugin…</b><small>Choose a plugin file from your computer</small></span></div>
-    <div class="sys-callout"><b>If a plugin breaks Synthia</b><span>Start with all plugins off: hold Shift while the page loads, or add <code>?plugins=off</code> to the address. Then switch plugins back on one by one.</span>
+    <div class="sys-callout"><b>If a plugin breaks Meloxia</b><span>Start with all plugins off: hold Shift while the page loads, or add <code>?plugins=off</code> to the address. Then switch plugins back on one by one.</span>
       ${btn("Restart with all plugins off", 'data-sys="plug-safe"', "small")}</div>`;
 }
 const DONE = ["Done", "close", "primary", "Closes this window."];
@@ -27,7 +27,7 @@ function addPlugin() {
   if (INSTALLED.some((e) => e.id === id)) return toast(`${PLUGIN_TYPES[id].name} is already installed`);
   showConsent({
     title: "Add plugin",
-    lead: `tape-warmth.synthiaplugin · ${fmtKb(PLUGIN_TYPES[id].kb)}`,
+    lead: `tape-warmth.meloxiaplugin · ${fmtKb(PLUGIN_TYPES[id].kb)}`,
     instruments: [],
     plugins: [{ id }],
     install: true,
@@ -94,7 +94,7 @@ function prefsBody() {
     <div class="store"><div class="store-bar">${bars}</div>
       <ul>${parts.map((p, i) => `<li><i class="p${i}"></i>${p.label}<span>${p.mb ? fmtMb(p.mb) : "nothing yet"}</span></li>`).join("")}</ul>
       <p class="sys-note">${fmtMb(used)} used · ${STORAGE.freeGb} GB still available on this computer.</p>
-      <p class="sys-note">${STORAGE.protected ? `<b>Protected from clearing.</b> The browser agreed to keep Synthia's data even when space runs low.` : `<b>Not protected.</b> The browser may clear Synthia's data when space runs low. Save your songs as files.`}</p></div>`;
+      <p class="sys-note">${STORAGE.protected ? `<b>Protected from clearing.</b> The browser agreed to keep Meloxia's data even when space runs low.` : `<b>Not protected.</b> The browser may clear Meloxia's data when space runs low. Save your songs as files.`}</p></div>`;
 }
 function openPrefs() {
   sysDialog({ title: "Preferences", body: prefsBody(), buttons: [DONE], close: () => clearInterval(prefsTimer) });
@@ -131,7 +131,7 @@ function systemAct(act, t) {
       toast(`Removed ${PLUGIN_TYPES[id].name}`, { action: "Undo", onAction: () => { INSTALLED.splice(removed.index, 0, removed.entry); openPlugins(); } });
     },
     "plug-add": addPlugin,
-    "plug-safe": () => toast("In the app, Synthia reloads now with every plugin switched off"),
+    "plug-safe": () => toast("In the app, Meloxia reloads now with every plugin switched off"),
     "pref-explain": () => { setExplain(!explainOn()); reopenPrefs(); },
   };
   acts[act]?.();
@@ -144,16 +144,16 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   addMenuItem({ group: "app", label: "Plugins…", icon: "plug", action: openPlugins, tip: "Shows your plugins to switch off, remove or add." });
   addMenuItem({ group: "app", label: "Preferences…", icon: "sliders", key: "Ctrl+,", action: openPrefs, tip: "Sets the look and explanations, and shows autosave and storage." });
-  addMenuItem({ group: "app", label: "Credits", icon: "heart", action: openCredits, tip: "Shows who made the sounds and the software Synthia uses." });
+  addMenuItem({ group: "app", label: "Credits", icon: "heart", action: openCredits, tip: "Shows who made the sounds and the software Meloxia uses." });
   sysTips([
     ["[data-sys='plug-toggle']", { name: "On or off", text: "Switches this plugin off without removing it. What it added stays in your songs." }],
     ["[data-sys='plug-decl']", { name: "What it says it does", text: "The plugin author's own description of what it uses." }],
     ["[data-sys='plug-remove']", { name: "Remove", text: "Removes this plugin. You can undo right after." }],
     ["[data-sys='plug-add']", { name: "Add plugin", text: "Installs a plugin from a file. You see what it says it does first." }],
-    ["[data-sys='plug-safe']", { name: "Restart with all plugins off", text: "Reloads Synthia with every plugin switched off, to recover from a broken one." }],
-    ["[data-set='look']", (el) => ({ name: el.textContent, text: "Changes how Synthia looks. Your choice is remembered." })],
+    ["[data-sys='plug-safe']", { name: "Restart with all plugins off", text: "Reloads Meloxia with every plugin switched off, to recover from a broken one." }],
+    ["[data-set='look']", (el) => ({ name: el.textContent, text: "Changes how Meloxia looks. Your choice is remembered." })],
     ["[data-sys='pref-explain']", { name: "Show explanations", text: "Shows or hides the one-line help under settings." }],
-    [".store-bar", { name: "Storage used", text: "Space Synthia uses in this browser, by kind." }],
+    [".store-bar", { name: "Storage used", text: "Space Meloxia uses in this browser, by kind." }],
     [".credits .lic", (el) => ({ name: el.textContent, text: LICENCE_WHAT[el.textContent] ?? "The terms are in the author's licence." })],
   ]);
 });

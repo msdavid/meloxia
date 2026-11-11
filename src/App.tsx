@@ -34,7 +34,7 @@ export function App() {
   if (!rig) {
     return (
       <main className="gate">
-        <h1>Synthia</h1>
+        <h1>Meloxia</h1>
         <p>Browsers keep audio muted until you ask nicely.</p>
         <button className="primary" onClick={start}>
           Start audio
@@ -46,7 +46,7 @@ export function App() {
   return (
     <main>
       <header>
-        <h1>Synthia</h1>
+        <h1>Meloxia</h1>
         <span className="tag">sound check</span>
         <LevelMeter engine={rig.engine} />
       </header>

@@ -288,7 +288,7 @@ addTips([
   ['[data-lib="pick"]', (el) => el.textContent.trim(), "Puts this instrument in a new row of the section. Downloads it first if needed."],
   ['[data-lib="remove"]', "Remove from this device", "Frees the space. The instrument stays in the library, ready to download again."],
   ['[data-badge="layers"]', "Loudness layers", "Recorded at several strengths, so soft notes sound soft and hard notes sound hard, not just quieter or louder."],
-  ['[data-badge="takes"]', "Takes", "Each note was recorded more than once; Synthia takes turns between them so repeated notes sound natural."],
+  ['[data-badge="takes"]', "Takes", "Each note was recorded more than once; Meloxia takes turns between them so repeated notes sound natural."],
   ['[data-badge="imported"]', "Imported", "You added this instrument. It lives in this browser only."],
   [".lib-size", "Size", "How much space the instrument takes once downloaded."],
 ]);

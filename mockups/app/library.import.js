@@ -50,7 +50,7 @@ const impFmtList = (title, list, cls) => `<div class="imp-fmt ${cls}"><b>${title
 function impDropHtml() {
   return `<div class="imp-drop" tabindex="0">
       ${icon("folder")}<b>Drop a folder, a zip, or a .sf2, .sf3 or .sfz file here</b>
-      <p>Synthia reads what's inside, shows you what it found, and keeps it in this browser. Nothing is uploaded.</p>
+      <p>Meloxia reads what's inside, shows you what it found, and keeps it in this browser. Nothing is uploaded.</p>
       <div class="imp-pick">
         <label class="btn">${icon("file")}Choose files…<input type="file" multiple hidden data-imp="files" accept=".sf2,.sf3,.dls,.sfz,.zip,audio/*" /></label>
         <label class="btn">${icon("folder")}Choose a folder…<input type="file" hidden data-imp="folder" webkitdirectory /></label>
@@ -64,7 +64,7 @@ function impDropHtml() {
       ${impFmtList("Convert first", IMP_IMPORT_FORMATS.convert, "convert")}
     </div>
     <p class="imp-foot">Imported instruments are kept exactly as you dropped them, untouched, in this browser's storage.
-      Your browser lets Synthia use up to about 60% of free disk space.</p>`;
+      Your browser lets Meloxia use up to about 60% of free disk space.</p>`;
 }
 
 function impFoundHtml() {
@@ -107,8 +107,8 @@ function impMapHtml() {
         (v) => (v === "notes" ? "One instrument, by note" : "A drum kit, one sound each"))}</div>
     </div>
     <p class="imp-sub">${imp.kind === "notes"
-      ? "Synthia guessed each file's note and loudness from its name. Fix any guess; notes in between are filled by stretching the nearest sound."
-      : "Synthia guessed which drum each file is from its name. Each one becomes a drum row; pick “Leave out” to skip a file."}
+      ? "Meloxia guessed each file's note and loudness from its name. Fix any guess; notes in between are filled by stretching the nearest sound."
+      : "Meloxia guessed which drum each file is from its name. Each one becomes a drum row; pick “Leave out” to skip a file."}
       ${unsure ? `<b class="imp-warn">${unsure} to check</b>` : ""}</p>
     <div class="imp-table"><table><thead><tr><th>File</th><th>${imp.kind === "notes" ? "Note · Loudness" : "Drum row"}</th><th></th></tr></thead>
       <tbody>${imp.rows.map(impMapRowHtml).join("")}</tbody></table></div>`;
@@ -125,7 +125,7 @@ function impLockedHtml() {
 }
 
 const impNoneHtml = () => `<div class="imp-locked">${icon("file")}<h3>No instruments found in ${esc(imp.pack.file)}</h3>
-  <p>Synthia looks for sound files, SoundFont files (.sf2, .sf3, .dls) and SFZ files. Try a folder or zip holding one of those.</p></div>`;
+  <p>Meloxia looks for sound files, SoundFont files (.sf2, .sf3, .dls) and SFZ files. Try a folder or zip holding one of those.</p></div>`;
 
 function impJobsHtml() {
   return `<div class="imp-jobs">${imp.jobs.map((j) => `<div class="imp-job" data-job="${j.id}"><b>${esc(j.name)}</b>
@@ -178,7 +178,7 @@ function impRun(items) {
     if (busy) return requestAnimationFrame(tick);
     libAddImports(imp.jobs.map((j) => ({ id: j.id, name: j.name, bank: imp.pack.file ?? imp.pack.zip ?? "Your sound files",
       mb: imp.pack.mb ? Math.round((imp.pack.mb / imp.pack.found.length) * 10) / 10 : Math.round(j.sounds * 0.4 * 10) / 10,
-      layers: j.layers, licence: "Yours to check: Synthia doesn't look inside", credit: "", kind: j.drums ? "drum" : "sampled", note: j.drums ? "Your drum kit" : "Your instrument" })));
+      layers: j.layers, licence: "Yours to check: Meloxia doesn't look inside", credit: "", kind: j.drums ? "drum" : "sampled", note: j.drums ? "Your drum kit" : "Your instrument" })));
     toast(items.length > 1 ? `${items.length} instruments are in My imports` : `${items[0].name} is in My imports`);
   };
   requestAnimationFrame(tick);
@@ -231,14 +231,14 @@ addTips([
   ['.imp-pick label:first-child', "Choose files", "Picks sound files, a zip, a SoundFont or an SFZ file from your computer."],
   ['.imp-pick label:last-child', "Choose a folder", "Picks a whole folder, for packs that come as a folder of sound files."],
   ["[data-demo]", (el) => `Pretend: ${el.textContent.trim()}`, (el) => IMP_DEMO_DROPS.find((d) => d.key === el.dataset.demo).tip],
-  ['[data-set="imp-kind"][data-v="notes"]', "One instrument, by note", "Each file is a note of one instrument; Synthia fills the notes in between."],
+  ['[data-set="imp-kind"][data-v="notes"]', "One instrument, by note", "Each file is a note of one instrument; Meloxia fills the notes in between."],
   ['[data-set="imp-kind"][data-v="drums"]', "A drum kit", "Each file is a different drum and gets its own row in the grid."],
   ['[data-map="note"]', "Note", "Which note this file plays. Guessed from the file name; change it if the guess is wrong."],
   ['[data-map="level"]', "Loudness", "How hard this file was played, so soft and hard notes use the right recording."],
   ['[data-map="drum"]', "Drum row", "Which drum row this file becomes. “Leave out” skips it."],
   ["[data-pick]", "Import this instrument", "Ticked instruments are added to My imports."],
   ['[data-imp="name"]', "Name", "What the instrument is called in the library and in row headers."],
-  [".imp-fmt.now", "Works now", "Formats Synthia reads today."],
+  [".imp-fmt.now", "Works now", "Formats Meloxia reads today."],
   [".imp-fmt.next", "Coming next", "Formats planned for the next version. Until then, convert them to SFZ."],
   [".imp-fmt.convert", "Convert first", "Closed formats no browser can read. Convert them with ConvertWithMoss, then drop the result."],
 ]);

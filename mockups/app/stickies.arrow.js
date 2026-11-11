@@ -5,6 +5,7 @@
 
 const arrowKey = new WeakMap(); // a stable key per note for the tip's last drawn point
 const tipKey = (n) => (arrowKey.has(n) ? arrowKey.get(n) : (arrowKey.set(n, {}), arrowKey.get(n)));
+const drawnTail = new Map(); // note id → where its arrow last left it, as drawn
 
 function arrowsSvg(drawn, P) {
   const parts = drawn
@@ -13,6 +14,7 @@ function arrowsSvg(drawn, P) {
       const tip = refPoint(P, n.arrow.tip, tipKey(n));
       const box = noteBox(n, pos);
       const tail = { x: clamp(box.x, tip.x, box.x + box.w), y: clamp(box.y, tip.y, box.y + box.h) };
+      drawnTail.set(n.id, tail);
       const len = Math.hypot(tip.x - tail.x, tip.y - tail.y);
       const handle = `<circle class="sticky-tip" data-note="${n.id}" cx="${tip.x}" cy="${tip.y}" r="7"/>`;
       if (len < 12) return `<g class="sticky-arrow" style="--sc:${NOTE_COLOURS[n.color][1]}">${handle}</g>`;

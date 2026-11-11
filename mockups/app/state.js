@@ -45,6 +45,7 @@ const ICONS = {
   tempo: '<path d="M5.2 13.5h5.6L9.2 2.5H6.8z"/><path d="M8 10.5l3.8-6"/>',
   clef: '<path d="M6 12V3.8l6-1.5v8"/><circle cx="4.5" cy="12" r="1.5"/><circle cx="10.5" cy="10.3" r="1.5"/>',
   menu: '<path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>',
+  bulb: '<path d="M6.2 13.5h3.6M6.6 15h2.8"/><path d="M5.7 11.2C4.4 10.3 3.6 8.8 3.6 7.2a4.4 4.4 0 0 1 8.8 0c0 1.6-.8 3.1-2.1 4V12H5.7z"/>',
 };
 
 const icon = (name) => `<svg class="i" viewBox="0 0 16 16" aria-hidden="true">${ICONS[name]}</svg>`;

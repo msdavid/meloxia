@@ -106,6 +106,7 @@ function stepBack() {
 function startRecording() {
   if (!edSec) return;
   if (!armedRows().length) return toast("No row records yet: the dot beside a row's name lets it record");
+  cancelSuggestion("a recording started");
   REC.notes = 0;
   if (REC.mode === "step") {
     REC.on = true;

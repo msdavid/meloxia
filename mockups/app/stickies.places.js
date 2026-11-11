@@ -23,9 +23,9 @@ const rectIn = (el, host) => {
 };
 
 /** Keeps a note's box inside its view, with room on the right for the arrow handle. */
-function clampNote(P, pt, box) {
-  const b = P.bounds(), room = 10 / P.scale();
-  return { x: clamp(b.x0, pt.x, b.x1 - box.w - room), y: clamp(b.y0, pt.y, b.y1 - box.h) };
+function clampNote(P, pt, box, b = P.bounds()) {
+  const room = 10 / P.scale(), ox = box.ox ?? 0, oy = box.oy ?? 0; // a minimised note: its icon
+  return { x: clamp(b.x0 - ox, pt.x, b.x1 - box.w - room - ox), y: clamp(b.y0 - oy, pt.y, b.y1 - box.h - oy) };
 }
 
 const lastPoints = new Map(); // where each ref was last drawn, for when its thing goes away
@@ -148,8 +148,14 @@ const editorPlace = {
   },
   // The part of the grid scrolled into view.
   bounds() {
-    const host = this.host(), view = host.closest(".grid-scroll"), v = rectIn(view, host);
-    return { x0: Math.max(0, v.x), y0: Math.max(0, v.y), x1: v.x + view.clientWidth, y1: v.y + view.clientHeight };
+    const host = this.host(), view = host.closest(".grid-scroll"), v = rectIn(view, host), g = this.keep();
+    return { x0: Math.max(0, v.x), y0: Math.max(0, v.y), x1: Math.min(g.x1, v.x + view.clientWidth), y1: Math.min(g.y1, v.y + view.clientHeight) };
+  },
+  // The grid itself: notes are drawn inside it, so they never add to what the grid scrolls (a narrower window
+  // shrinks the grid, and a note left sticking out would widen it, then scroll it back when minimised).
+  keep() {
+    const host = this.host();
+    return { x0: 0, y0: 0, x1: host.clientWidth, y1: host.clientHeight };
   },
 };
 
@@ -237,8 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (records.some((r) => [...r.addedNodes].some((el) => !el.classList?.contains("sticky-layer")))) renderStickies("panel");
   }).observe(sideEl, { childList: true });
   new MutationObserver(() => renderStickies("dialog")).observe(dialogBack, { childList: true });
-  // A panel or dialog that changes size keeps its notes inside.
-  const refit = () => (renderStickies("panel"), renderStickies("dialog"));
+  // A panel, dialog or grid that changes size keeps its notes inside.
+  const refit = () => (renderStickies("panel"), renderStickies("dialog"), renderStickies("editor"));
   new ResizeObserver(refit).observe(sideEl);
   window.addEventListener("resize", refit);
   // Arrows follow controls that scroll inside a panel or dialog.

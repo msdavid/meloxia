@@ -1,13 +1,13 @@
 [
   {
     "file": "landscape.md",
-    "summary": "Is the name Synthia taken, which existing products come closest to what we are building, and five candidate names.",
-    "verdict": "Synthia: crowded and risky (synthia.app is a live browser music-maker; Synthesia is one letter away). Candidates: Tinkerbeat and Stitchbeat clean; Tunepath usable; Songloom and Weavetone risky. Similar apps: nothing combines a rule-carrying section graph with per-note step grids for non-musicians."
+    "summary": "Is the name Synthia taken, which existing products come closest to what we are building, five candidate names, and a check on the new name, Meloxia.",
+    "verdict": "Synthia: crowded and risky (synthia.app is a live browser music-maker; Synthesia is one letter away). Candidates: Tinkerbeat and Stitchbeat clean; Tunepath usable; Songloom and Weavetone risky. Similar apps: nothing combines a rule-carrying section graph with per-note step grids for non-musicians. Meloxia: usable with caveats (meloxia.com and the GitHub user are taken, close to meloxicam drug brands; npm free)."
   },
   {
     "file": "libraries.md",
     "summary": "Libraries and engines per area, with measured benchmarks for the step grid and the voice budget, plus the plugin API design.",
-    "verdict": "Tone.js 15.5.66 as a toolkit under our own conductor; DOM grid with a canvas overlay; React Flow; zustand + immer; full-trust plugins with UI slots and a block-type registry; always-complete .synthia files."
+    "verdict": "Tone.js 15.5.66 as a toolkit under our own conductor; DOM grid with a canvas overlay; React Flow; zustand + immer; full-trust plugins with UI slots and a block-type registry; always-complete .meloxia files."
   },
   {
     "file": "instrument-banks.md",
@@ -16,7 +16,7 @@
   },
   {
     "file": "midi-controllers.md",
-    "summary": "How Synthia supports MIDI controllers: what Web MIDI allows in Chrome, what each controller family sends, 31 current controllers with their programmer docs, and how other software maps them.",
+    "summary": "How Meloxia supports MIDI controllers: what Web MIDI allows in Chrome, what each controller family sends, 31 current controllers with their programmer docs, and how other software maps them.",
     "verdict": "Any keyboard plays and MIDI learn covers any knob out of the box; JSON profiles ship in phases, starting with the MPK mini family, MiniLab 3, Launchkey MK4, nanoKONTROL2 and APC mini mk2; SysEx only on demand; Chrome only."
   }
 ]

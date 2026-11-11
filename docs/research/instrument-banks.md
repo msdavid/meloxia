@@ -1,8 +1,8 @@
-# Free and open-source instrument banks for Synthia
+# Free and open-source instrument banks for Meloxia
 
 Research date: 2026-11-11. Status: catalogue only. Nothing was downloaded, installed or wired into the app.
 
-Synthia runs Tone.js 15 in the browser and will play only sampled instruments and drums from banks we are allowed to download (scope set 2026-11-11: the synthesizer is out for now, so synth material is reduced to Appendix A). It is for the owner's personal, non-commercial use, but a publicly served build redistributes every sample it loads, so the **Re-host publicly?** column matters as much as the sound.
+Meloxia runs Tone.js 15 in the browser and will play only sampled instruments and drums from banks we are allowed to download (scope set 2026-11-11: the synthesizer is out for now, so synth material is reduced to Appendix A). It is for the owner's personal, non-commercial use, but a publicly served build redistributes every sample it loads, so the **Re-host publicly?** column matters as much as the sound.
 
 ## How to read this
 
@@ -59,7 +59,7 @@ Entry count: 114 graded entries: A 20, B 54, C 40; per section: §1 7/10/1; §2 
 | B | Osiris Piano (CC0) | https://github.com/sfzinstruments/Osiris_Piano (file listing, beta_notes.txt, LICENSE) | Piano with several mic/noise variants (folders `UC`, `UC-Sus`, `UC-noisy`) | Quality facts UNVERIFIED (manual PDF not read). Beta 0.923 note: "CC0 license added" | SFZ + Sforzando bank, FLAC | repo 447 MB | CC0 (LICENSE "CC0 1.0 Universal") | yes | bundled | Needs conversion | CC0 piano, but I could not confirm layer counts |
 | B | MTG Solo Saxophones (soprano/alto/tenor/baritone, from Freesound MTG packs) | https://github.com/sfzinstruments/MTG.SoloSax (README, LICENSE) | 4 solo saxes, trimmed and looped | "24 bit, 48 kHz, Mono"; looped | SFZ + FLAC | 110 MB (sfzi-data) | CC-BY-4.0 per sfzi-data and repo LICENSE file; original MTG Freesound pack licences not re-checked | yes with attribution | bundled | Needs conversion | Good sax; upstream chain is Freesound |
 | B | Pianobook sample packs | https://www.pianobook.co.uk/faq/ and https://www.pianobook.co.uk/?p=4987 (FAQ pages) | Community piano/instrument packs for Kontakt/Decent Sampler/etc. | Varies by pack | varies | varies | FAQ: packs "should* be copyright free" for use in "any commercial and non-commercial compositions", but "It is forbidden to sell or redistribute the sample libraries that you do not own the copyright to". EULA text itself not read | NO | local-only | n/a | Use is free, redistribution is explicitly forbidden, so a public web app cannot host them |
-| B | Philharmonia Orchestra free sound samples | https://philharmonia.co.uk/resources/sound-samples/ ; zip HEAD requests | "all standard orchestral instruments, as well as guitar, mandolin, banjo", plus percussion; ZIPs for Woodwind, Brass, Percussion, Strings | Format and dynamics inside the ZIPs: UNVERIFIED (page does not say; I did not open the ZIPs) | ZIP | all-samples 261 MB; Woodwind 273 MB; Strings 171 MB; Brass 104 MB; Percussion 7.2 MB (Content-Length) | Page: "free to use these samples as you wish, including releasing them as part of a commercial work. The only restriction is that they must not be sold or made available 'as is' (i.e. as samples or as a sampler instrument)" | NO (a hosted sampler instrument is exactly what it forbids) | local-only | n/a | Wide coverage but the licence prohibits what Synthia would do |
+| B | Philharmonia Orchestra free sound samples | https://philharmonia.co.uk/resources/sound-samples/ ; zip HEAD requests | "all standard orchestral instruments, as well as guitar, mandolin, banjo", plus percussion; ZIPs for Woodwind, Brass, Percussion, Strings | Format and dynamics inside the ZIPs: UNVERIFIED (page does not say; I did not open the ZIPs) | ZIP | all-samples 261 MB; Woodwind 273 MB; Strings 171 MB; Brass 104 MB; Percussion 7.2 MB (Content-Length) | Page: "free to use these samples as you wish, including releasing them as part of a commercial work. The only restriction is that they must not be sold or made available 'as is' (i.e. as samples or as a sampler instrument)" | NO (a hosted sampler instrument is exactly what it forbids) | local-only | n/a | Wide coverage but the licence prohibits what Meloxia would do |
 | B | jRhodes3 (jRhodes3c looped 16 MB, jRhodes3d unlooped 90 MB): 1977 Fender Rhodes Mark I Stage 73, recorded by Jeff Learman. Mirrors: sfzinstruments/jlearman.jRhodes3c and jRhodes3d, jlearman/jRhodes3d-wav (WAV), danigb/samples `audio/jlearman` | https://github.com/sfzinstruments/jlearman.jRhodes3d (README, LICENSE); https://github.com/sfzinstruments/jlearman.jRhodes3c | Rhodes Mk I recorded from the harp pickup, EQ'd (bell treble boost, low-mid scoop); mono, stereo-doubled and stereo-vibrato variants | 67 samples, 16-bit, up to 5 velocity layers, every 4th white key sampled. 3d: unlooped full-length, up to 25 s, with and without velocity crossfade. 3c: looped after a few seconds. Sample rate UNVERIFIED | FLAC + SFZ (3d, 3c); WAV in the separate jRhodes3d-wav repo | 3d: 90 MB total (mono 22 MB, stereo 36 MB, stereo vibrato 33 MB). 3c: 16 MB | Samples CC BY-NC 4.0 (3c: CC BY-NC-SA 4.0), control files CC0. 3d LICENSE: "To distribute the samples themselves, such as in an application, software instrument, or as a sample set, the jRhodes samples are licensed under CC BY-NC 4.0." Also "To use the samples in a commercial product, please contact me and I will be happy to grant a license." CONFLICT: danigb/samples README labels its jlearman copy "CC0 1.0", which does not match the upstream LICENSE; trust upstream | yes if the web app stays non-commercial, with credit (3c additionally requires share-alike). No for any commercial use without asking the author | bundled | needs conversion (FLAC + SFZ velocity layers and loops to a Tone.Sampler map; 3c looped version is the right size for the web. Safari FLAC support not checked) | Best-documented, multi-velocity hardware Rhodes. Held at B by the NC clause and the SFZ-to-Tone conversion |
 | C | Terkelsen Marimba; MSLP Vibes; Ixox Flute; Ethan Winer Collection (small SF2-derived sets) | https://github.com/sfzinstruments/Terkelsen.Marimba , EthanWiner.Soundfonts , Ixox.Flute (READMEs); sfzi-data | Marimba, vibraphone, flute, small orchestral set | Marimba "multisampled/multivelocity"; sfzi-data: stereo "3 velocity layers, every note sampled", 16-bit 44.1; MSLP vibes "one sample each note, one velocity layer"; Ethan Winer 17 MB | SFZ + WAV/FLAC | Marimba 50 MB; Vibes 19 MB; Flute 10.7 MB; Winer 17 MB | Marimba: no licence stated (sfzi-data "None") = UNVERIFIED. Vibes CC-BY-3.0, Flute CC-BY-4.0, Winer "Public Domain" (all sfzi-data) | unclear for the marimba; yes with attribution for vibes/flute; Winer PD per catalogue | local-only | Needs conversion | Small and usable; licence of the marimba is missing |
 
@@ -241,7 +241,7 @@ Rule (agreed with the project lead on 2026-11-11, now that the repository is pub
 - The **Pack** column is derived mechanically from the Re-host cell. A row that groups several banks takes its weakest member's pack: in the Terkelsen/MSLP/Ixox/Winer row only the marimba lacks a licence. Players (§6) carry no pack, because they are code dependencies. These bundled entries carry a condition to honour:
   - Credit lines for every CC BY / BY-SA bank.
   - Share-alike for converted BY-SA files (AVL, Salamander Drumkit).
-  - jRhodes3 is CC BY-NC: bundled only while Synthia stays non-commercial.
+  - jRhodes3 is CC BY-NC: bundled only while Meloxia stays non-commercial.
   - Splendid Grand rests on an untraced public-domain claim.
   - University of Iowa has a grant but no licence document.
 
@@ -277,7 +277,7 @@ Since the scope change, the first question for every bank is whether its licence
    - Every bank is fetched into a local, git-ignored `samples/` folder by a script driven by a manifest committed to the repo. Each manifest entry carries the source URL, file filter, licence, credit line and pack.
    - "Bundled" and "local-only" use the same mechanism. The pack only decides what a public deploy may serve.
 3. **Public deploy:**
-   - Synthia will be used by other people from a public address, non-commercially.
+   - Meloxia will be used by other people from a public address, non-commercially.
    - A public build serves **bundled** banks only.
    - Non-commercial licences (CC BY-NC, BY-NC-SA) are acceptable.
    - Banks with no licence, or that forbid re-hosting, never ship. The owner approved using them locally, and users can add them themselves through import.
@@ -306,7 +306,7 @@ Size estimates assume Opus at about 128 kb/s stereo or 64 kb/s mono: WAV ÷ 10, 
 | 6 | Double bass | D. Smolken double bass (§4) | `smpldsnds/sfzinstruments-dsmolken-double-bass` → `pizz/*.ogg` (optionally `arco/`, +7.7 MB) | CC0 · bundled | pizzicato, all layers | 6.4 MB ogg → 6.4 MB | Double bass by D. Smolken (CC0) |
 | 7 | Electric bass | Karoryfer Swagbass (§1) | `sfzinstruments/karoryfer.swagbass` → `notes/*_rr[12].wav` | CC0 · bundled | 3 layers (p/f/fff), 2 of 4 RR, every sampled note (fifths tuning, low string also tuned down to A) | 85 MB WAV → ~8.5 MB | Swagbass by D. Smolken / Karoryfer Samples (CC0) |
 | 8 | Acoustic guitar | Karoryfer Shinyguitar, mic channel (§1) | `sfzinstruments/karoryfer.shinyguitar` → `Samples/acoustic/` without `release`, `_rr[12]_` only | CC0 · bundled | archtop guitar via microphone, 4 layers, 2 RR | 113 MB WAV → ~11 MB | Shinyguitar by D. Smolken / Karoryfer Samples (CC0) |
-| 9 | Electric guitar | Karoryfer Emilyguitar (§1) | `sfzinstruments/karoryfer.emilyguitar` → `notes/*_rr[12].wav` | CC0 · bundled | direct (both pickups), 4 layers (p/mp/mf/f), 2 of 3 RR; amp and effects come from Synthia | 81 MB WAV → ~8 MB | Emilyguitar by D. Smolken / Karoryfer Samples (CC0) |
+| 9 | Electric guitar | Karoryfer Emilyguitar (§1) | `sfzinstruments/karoryfer.emilyguitar` → `notes/*_rr[12].wav` | CC0 · bundled | direct (both pickups), 4 layers (p/mp/mf/f), 2 of 3 RR; amp and effects come from Meloxia | 81 MB WAV → ~8 MB | Emilyguitar by D. Smolken / Karoryfer Samples (CC0) |
 | 10 | String ensemble | VSCO 2 CE sections (§1) | `sgossner/VSCO-2-CE` → `Strings/Violin Section/susVib/` + `Pizz/`, `Strings/Viola Section/susvib/` + `pizz/`, `Strings/Cello Section/susvib/` + `pizzT/` | CC0 · bundled | sustain with vibrato + pizzicato, layers and RR as shipped | 249 MB WAV → ~25 MB | VSCO 2 Community Edition by Versilian Studios (CC0) |
 | 11 | Solo cello | Bigcat Cello (§1) | `sfzinstruments/karoryfer-bigcat.cello` → `Samples/sus/`, `Samples/pizzcato/` | CC0 · bundled | sustain + pizzicato | 102 MB WAV → ~10 MB | Bigcat Cello by Karoryfer Samples (CC0) |
 | 12 | Trumpet | VSCO 2 CE (§1) | `sgossner/VSCO-2-CE` → `Brass/Trumpet/sus/`, `Brass/Trumpet/stac/` | CC0 · bundled | sustain + staccato | 55 MB WAV → ~5.5 MB | VSCO 2 Community Edition by Versilian Studios (CC0) |
@@ -415,7 +415,7 @@ These are counts of the 104 bank entries in this catalogue (§1–§4, §7, §8)
 3. **Converter** (one module per format, pure, no storage): `convert(tree) -> AsyncIterable<{sample: {id, bytes|pcm, rate, channels, loop?}} | {region} | {meta} | {lost: string}>`. It emits our manifest records and the list of dropped features (shown in the import report). The loose-audio converter is the fallback for any tree.
 4. **Normalise (Web Worker)**: store the original files untouched (decision 6). Only extracted-from-container samples (SF2/SF3/DLS PCM) are written out, as WAV or FLAC. Decoding (via `decodeAudioData`, our own PCM/AIFF code, or the library decoder) happens at play time, one sample at a time to cap memory.
 5. **Store (dedicated Worker)**: write each sample with `createSyncAccessHandle` under `/packs/<id>/samples/`, then write `manifest.json` last (a pack without a manifest is an interrupted import and is garbage collected), call `navigator.storage.persist()` from the main thread, show `navigator.storage.estimate()`.
-6. **Runtime**: manifest -> Synthia's sampler map; samples are read from OPFS on demand.
+6. **Runtime**: manifest -> Meloxia's sampler map; samples are read from OPFS on demand.
 
 ### Phases
 
@@ -435,7 +435,7 @@ These are counts of the 104 bank entries in this catalogue (§1–§4, §7, §8)
    - sfArk: GPL C++, abandoned 2018.
    - Ableton's encrypted packs.
 
-   Document these as **"convert first with ConvertWithMoss"** (LGPL-3.0, Java, ~60 formats, pushed 2026-11-08): convert offline to SFZ or SF2, then import. Use its documents as specs, but don't copy its code into Synthia.
+   Document these as **"convert first with ConvertWithMoss"** (LGPL-3.0, Java, ~60 formats, pushed 2026-11-08): convert offline to SFZ or SF2, then import. Use its documents as specs, but don't copy its code into Meloxia.
 
 ### Must-test in the first import spike
 
@@ -636,7 +636,7 @@ These notes come from the four research passes, lightly edited. Notes that disag
 
 ## Appendix A: synth material (out of scope)
 
-Researched before the scope change and kept for reference. To load single-cycle waves (AKWF, WaveEdit), convert each cycle to a `PeriodicWave` (FFT) or loop it as an AudioBuffer. The WASM engines (faustwasm, Csound, Elementary, the WebCLAP ports) run as an `AudioWorkletNode` in Tone's context. The WebCLAP ports of Surge XT, Odin 2, Helm and OB-Xf are AGPL-3.0, so serving them would mean publishing Synthia's source.
+Researched before the scope change and kept for reference. To load single-cycle waves (AKWF, WaveEdit), convert each cycle to a `PeriodicWave` (FFT) or loop it as an AudioBuffer. The WASM engines (faustwasm, Csound, Elementary, the WebCLAP ports) run as an `AudioWorkletNode` in Tone's context. The WebCLAP ports of Surge XT, Odin 2, Helm and OB-Xf are AGPL-3.0, so serving them would mean publishing Meloxia's source.
 
 | Grade | Name | URL opened | Contents | Quality facts (maintained? layers, bit depth/rate) | Format | Size | Licence + decisive quote | Re-host publicly? | Pack | Web-readiness | Grade reason |
 |---|---|---|---|---|---|---|---|---|---|---|---|

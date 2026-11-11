@@ -1,0 +1,32 @@
+Meloxia MIDI monitor report
+Made 11/11/2026, 9:25:24 PM · Chrome 157 · device messages (SysEx) allowed
+Note numbers: 60 is middle C, written C4 here (Novation's guides call it C3).
+
+Devices
+  in  "Midi Through Port-0" · maker "-" · connected
+  in  "Launchkey Mini MK3 MIDI Port" · maker "Focusrite A.E" · connected
+  in  "Launchkey Mini MK3 DAW Port" · maker "Focusrite A.E" · connected
+  out "Midi Through Port-0" · maker "-" · connected
+  out "Launchkey Mini MK3 MIDI Port" · maker "Focusrite A.E" · connected
+  out "Launchkey Mini MK3 DAW Port" · maker "Focusrite A.E" · connected
+
+Identity replies
+  "Launchkey Mini MK3 MIDI Port": Novation (Focusrite), family 02 01, model 00 00, firmware 00 02 05 09  [F0 7E 00 06 02 00 20 29 02 01 00 00 00 02 05 09 F7]
+  "Launchkey Mini MK3 DAW Port": Novation (Focusrite), family 02 01, model 00 00, firmware 00 02 05 09  [F0 7E 00 06 02 00 20 29 02 01 00 00 00 02 05 09 F7]
+
+Guided steps 1-7: not done (the owner played freely; everything below arrived outside the steps).
+
+Outside the steps
+  [Launchkey Mini MK3 MIDI Port] Key down · channel 1 · notes 51–71, 5 distinct, in order: 57 70 71 51 55 · how hard 42–127 · 8 messages
+  [Launchkey Mini MK3 MIDI Port] Key up · channel 1 · notes 51–71, 5 distinct, in order: 57 70 71 51 55 · release 0 · 8 messages
+  [Launchkey Mini MK3 MIDI Port] Key down · channel 10 · notes 38–51, 7 distinct, in order: 40 41 42 38 49 50 51 · how hard 10–71 · 9 messages
+  [Launchkey Mini MK3 MIDI Port] Key up · channel 10 · notes 38–51, 7 distinct, in order: 40 41 42 38 49 50 51 · release 0 · 9 messages
+  [Launchkey Mini MK3 MIDI Port] Control change · channel 1 · numbers 1–117, 3 distinct, in order: 1 115 117 · values 0–127 · 17 messages
+  [Launchkey Mini MK3 MIDI Port] Pitch bend · channel 1 · bend -8192–0 · 116 messages
+  [Midi Through Port-0] Device message · 1 message
+    F0 7E 7F 06 01 F7
+  [Launchkey Mini MK3 MIDI Port] Identity reply · 1 message
+    F0 7E 00 06 02 00 20 29 02 01 00 00 00 02 05 09 F7
+  [Launchkey Mini MK3 DAW Port] Identity reply · 1 message
+    F0 7E 00 06 02 00 20 29 02 01 00 00 00 02 05 09 F7
+  Timing clock · 5163 ticks
