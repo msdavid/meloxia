@@ -4,7 +4,8 @@
  * a slider or field settled. Nothing needs to call it for ordinary edits; it notices them.
  *
  *   commitHistory()          take a snapshot now, if anything changed (after a change made outside a gesture, say a timer)
- *   pauseHistory(true|false) hold snapshots while a long action runs (a recording take), so it becomes one step
+ *   pauseHistory(true|false) hold snapshots while a long action runs (a recording take), so it becomes one step;
+ *                            a held mouse button or finger does the same by itself
  *   addHistoryField(key)     include state[key] in snapshots (an area keeping its own data on `state`)
  *   HISTORY_HOOKS.push(fn)   fn() runs after an undo or redo has restored the song, before the canvas, editor and panel redraw
  *   undo(), redo()           top-bar buttons, Ctrl+Z, Ctrl+Shift+Z and Ctrl+Y
@@ -36,8 +37,11 @@ function pauseHistory(on) {
   historyPaused = on;
 }
 
+// While a button is held nothing commits: a drag is one step, however many redraws, focus changes or timers it meets.
+let pressing = false;
+
 function commitHistory() {
-  if (historyPaused) return;
+  if (historyPaused || pressing) return;
   const now = takeSnapshot();
   if (now.key !== current.key) {
     past.push(current);
@@ -88,13 +92,11 @@ function syncHistory() {
 
 // A gesture has finished once its own handlers have run: commit just after them. Typing is one gesture: a text
 // field's keystrokes commit together when it loses focus.
-let pressing = false; // a drag commits when it ends, never halfway
-window.addEventListener("pointerdown", () => (pressing = true), true);
+// A press first commits what came before it (text typed in a field), so that stays its own step.
+window.addEventListener("pointerdown", () => (commitHistory(), (pressing = true)), true);
 ["pointerup", "pointercancel"].forEach((type) => window.addEventListener(type, () => (pressing = false), true));
 const commitSoon = (event) => {
   if (event.type === "keyup" && event.target.matches?.('input:not([type=range]), textarea, [contenteditable="true"]')) return;
-  // A press that takes focus from a field: what was typed is committed now, before the drag it starts moves anything.
-  if (event.type === "focusout" && pressing) return commitHistory();
   setTimeout(commitHistory);
 };
 ["pointerup", "click", "keyup", "change", "focusout"].forEach((type) => window.addEventListener(type, commitSoon, true));

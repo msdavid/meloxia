@@ -29,9 +29,9 @@ function noteTipText(n) {
 
 /* ---------- drawing ---------- */
 
-function stickyHtml(n, pos) {
+function stickyHtml(n, pos, animate = true) {
   const style = `left:${pos.x}px; top:${pos.y}px; --sc:${NOTE_COLOURS[n.color][1]}`;
-  const fresh = n.id === freshNote ? " fresh" : "";
+  const fresh = animate && n.id === freshNote ? " fresh" : "";
   if (n.min) return `<button class="sticky-icon${fresh}" data-note="${n.id}" style="${style}">${icon("note")}</button>`;
   const where = stickyWhere(n);
   return `<div class="sticky${fresh}" data-note="${n.id}" style="${style}; width:${n.w}px; height:${n.h}px">
@@ -68,7 +68,7 @@ function renderStickies(view) {
   layer.querySelector(":scope > .sticky-arrows")?.remove();
   if (svg) layer.insertAdjacentHTML("afterbegin", svg);
   for (const { n, pos } of drawn) {
-    const shape = stickyHtml({ ...n, text: "" }, { x: 0, y: 0 });
+    const shape = stickyHtml({ ...n, text: "" }, { x: 0, y: 0 }, false); // its entrance animation ending is no change
     let el = old.get(n.id);
     old.delete(n.id);
     if (el && cardShape.get(el) === shape) {
@@ -224,6 +224,8 @@ document.addEventListener("input", (event) => {
   typingPause = setTimeout(commitHistory, 1000);
 });
 let typingPause = 0;
+// A press ends the spell instead (its focusout or pointerup commits), so the pause never lands inside a drag.
+window.addEventListener("pointerdown", () => clearTimeout(typingPause), true);
 
 // In a note, Enter starts a new line (elsewhere in the app it means "done").
 document.addEventListener("keydown", (event) => {
