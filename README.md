@@ -31,6 +31,8 @@ pnpm test       # unit tests (pure logic only; Node has no Web Audio)
 pnpm build      # type-check and bundle to dist/
 ```
 
+`node scripts/render-docs.mjs docs/research <folder>` renders the research reports to self-contained HTML pages, plus an index of cards (card text from `docs/research/reports.json`), in `<folder>`.
+
 On the sound check page: `A S D F G H J K` play white keys, `W E T Y U` black
 keys, `Z`/`X` shift the octave. Load or drop an audio file on a pad to play it.
 
@@ -44,6 +46,8 @@ keys, `Z`/`X` shift the octave. Load or drop an audio file on a pad to play it.
 | `src/audio/sampler.ts` | One-shot sample pads |
 | `src/music/` | Note and keyboard maths, no audio dependencies |
 | `src/components/`, `src/hooks/`, `src/App.tsx` | The sound check UI (temporary) |
+| `docs/research/` | Research reports (libraries, instrument banks, landscape) and `reports.json`, the card text for the rendered index |
+| `scripts/render-docs.mjs` | Markdown-to-HTML renderer for those reports (no dependencies) |
 | `mockups/` | Interface mockups: plain HTML, CSS and JS, one folder per mockup, opened directly in a browser |
 
 Audio code that needs a running `AudioContext` is checked in a browser; logic
