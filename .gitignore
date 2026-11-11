@@ -1,3 +1,6 @@
 node_modules
 dist
 *.local
+
+# Instrument sample files are fetched locally and never committed
+samples/
